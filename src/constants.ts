@@ -5,6 +5,7 @@ export enum NavigationPageTypesEnum {
   LoginPage = '/login',
   AdminLoginPage = '/admin-login',
   StandsPage = '/stands',
+  UserPage = '/my-stands',
 }
 
 export enum ButtonTextTypesEnum {
