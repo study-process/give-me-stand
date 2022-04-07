@@ -4,11 +4,11 @@ import { checkIsAdmin } from 'src/utils/checkIsAdmin'
 import { Form, Input, Button, Alert, Space, Typography } from 'antd'
 import { LoginCheck } from 'src/interfaces'
 import {
-  CurrentRoleTypesEnum,
   setCurrentRoleEvent,
   $displayErrorWarning,
   setErrorWarningEvent,
-} from 'src/store'
+} from "src/store";
+import { CurrentRoleTypesEnum } from 'src/store/currentRole/constants'
 import { adminLoginMessageTypesEnum } from './constants'
 import { NavigationPageTypesEnum } from '../../constants'
 
@@ -21,7 +21,7 @@ export const LoginPage = () => {
   const handleFinish = (values: LoginCheck) => {
     if (checkIsAdmin({ ...values })) {
       setCurrentRoleEvent(CurrentRoleTypesEnum.admin)
-      navigate(NavigationPageTypesEnum.adminPage)
+      navigate(NavigationPageTypesEnum.AdminPage)
     }
     setErrorWarningEvent()
   }

@@ -1,4 +1,4 @@
-import { FC, useEffect, useCallback } from 'react'
+import { FC, useEffect } from 'react'
 import { Space, Spin } from 'antd'
 import { useStore } from 'effector-react'
 import { AdminPageForm } from './components/AdminPageForm'

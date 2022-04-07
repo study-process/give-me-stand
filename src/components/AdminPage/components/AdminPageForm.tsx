@@ -75,7 +75,7 @@ export const AdminPageForm: FC<AdminPanelFormProps> = ({
       </Form.List>
       <Form.Item>
         <Button type="primary" htmlType="submit">
-          {ButtonTextTypesEnum.submit}
+          {ButtonTextTypesEnum.Submit}
         </Button>
       </Form.Item>
     </Form>

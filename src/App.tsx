@@ -3,23 +3,25 @@ import './App.css'
 import { Routes, Route } from 'react-router-dom'
 import { LoginPage } from 'src/components/LoginPage'
 import { AdminPage } from 'src/components/AdminPage'
+import { StandsPage } from 'src/pages'
 import { NavigationPageTypesEnum } from './constants'
 import StudentPage from './components/StudentPage/StudentPage'
+
 
 const App = () => {
   return (
     <div className="App">
       <Routes>
         <Route
-          path={NavigationPageTypesEnum.homePage}
+          path={NavigationPageTypesEnum.HomePage}
           element={<LoginPage />}
         />
         <Route
-          path={NavigationPageTypesEnum.loginPage}
+          path={NavigationPageTypesEnum.LoginPage}
           element={<div>login</div>}
         />
         <Route
-          path={NavigationPageTypesEnum.adminLoginPage}
+          path={NavigationPageTypesEnum.AdminLoginPage}
           element={
             <div>
               <LoginPage />
@@ -27,16 +29,22 @@ const App = () => {
           }
         />
         <Route
-          path={NavigationPageTypesEnum.studentPage}
+          path={NavigationPageTypesEnum.StudentPage}
           element={<StudentPage />}
         />
         <Route
-          path={NavigationPageTypesEnum.adminPage}
+          path={NavigationPageTypesEnum.AdminPage}
           element={
             <div>
               <AdminPage />
             </div>
           }
+        />
+
+        //TODO: основные страницы, остальные удалить
+        <Route
+          path={NavigationPageTypesEnum.StandsPage}
+          element={<StandsPage />}
         />
       </Routes>
     </div>

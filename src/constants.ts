@@ -1,11 +1,12 @@
 export enum NavigationPageTypesEnum {
-  homePage = '/',
-  adminPage = '/admin',
-  studentPage = '/student',
-  loginPage = '/login',
-  adminLoginPage = '/admin-login',
+  HomePage = '/',
+  AdminPage = '/admin',
+  StudentPage = '/student',
+  LoginPage = '/login',
+  AdminLoginPage = '/admin-login',
+  StandsPage = '/stands',
 }
 
 export enum ButtonTextTypesEnum {
-  submit = 'Подтвердить',
+  Submit = 'Подтвердить',
 }

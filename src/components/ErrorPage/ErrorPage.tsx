@@ -1,3 +1,4 @@
+import React from 'react'
 import { Result, Button } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { ErrorPageSubTitleTypesEnum } from './constants'
@@ -8,7 +9,7 @@ export const ErrorPage = () => {
   const navigate = useNavigate()
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
-    navigate(NavigationPageTypesEnum.homePage)
+    navigate(NavigationPageTypesEnum.HomePage)
   }
 
   return (
