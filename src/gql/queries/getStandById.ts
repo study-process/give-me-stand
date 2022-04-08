@@ -1,14 +1,15 @@
 import { gql } from '@apollo/client'
 
 export const GET_STAND_BY_ID = gql`
-  query GetStandByID($id: String) {
-    stands(where: { id: { _eq: $id } }) {
+  query GetStandByID($userId: Int) {
+    stands(where: { userId: { _eq: $userId } }) {
         id
         isBusy
         whoIsBusy
-        busyUntill
+        busyUntil
         branch
         comments
+        userId
     }
   }
 `

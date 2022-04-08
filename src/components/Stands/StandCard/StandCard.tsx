@@ -17,10 +17,11 @@ export const StandCard: FC<StandCardProps> = ({
   busyUntil,
   branch,
   comments,
+  isUserStand
 }) => {
 
   const standLink = `https://dev${id}-beta.pcbltools.ru/`
-  const isButtonDisabled = loading || isBusy
+  const isButtonDisabled = loading || isBusy && !isUserStand
   const status = isBusy ? statusTypeEnum.busy : statusTypeEnum.free
 
   return (
@@ -30,7 +31,9 @@ export const StandCard: FC<StandCardProps> = ({
         <Tooltip title={comments}>
           <CommentOutlined style={{ fontSize: '180%'}} hidden={!comments}/>
         </Tooltip>,
-        <Button type="primary" disabled={isButtonDisabled}>Занять</Button>,
+        <Button type="primary" disabled={isButtonDisabled}>
+          {isUserStand ? 'Освободить' : 'Занять'}
+        </Button>,
       ]}
     >
       <Skeleton loading={loading} avatar active>

@@ -6,4 +6,5 @@ export interface StandCardProps {
   busyUntil?: string;
   branch?: string;
   comments?: string;
+  isUserStand?: boolean;
 }

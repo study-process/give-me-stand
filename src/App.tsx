@@ -4,7 +4,7 @@ import './App.css'
 import { Routes, Route } from 'react-router-dom'
 import { LoginPage } from 'src/components/LoginPage'
 import { AdminPage } from 'src/components/AdminPage'
-import { StandsPage, UserPage } from "src/pages";
+import { UserPage, MainPage, StandsPage } from 'src/pages/index'
 import { Header } from './components/Header'
 import { NavigationPageTypesEnum } from './constants'
 import StudentPage from './components/StudentPage/StudentPage'
@@ -55,6 +55,11 @@ const App = () => {
         <Route
           path={NavigationPageTypesEnum.UserPage}
           element={<UserPage />}
+        />
+
+        <Route
+          path={NavigationPageTypesEnum.MainPage}
+          element={<MainPage />}
         />
       </Routes>
     </div>

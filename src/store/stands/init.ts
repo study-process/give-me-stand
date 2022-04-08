@@ -3,15 +3,16 @@ import {
   $CurrentStand,
   $stands,
   $standsIsLoading,
-  getStandsEvent, resetStandsEvent,
+  getStandsEvent, getUserStandEvent, resetStandsEvent,
   setIsStandsLoadingEvent
 } from "./index";
-import { getAllStandFx, setStandFx } from "./effects";
+import { getAllStandFx, getUserStandsFx } from "./effects";
+
 $stands.on(getAllStandFx.doneData, (_, stands) => stands).reset(resetStandsEvent)
-$CurrentStand.on(setStandFx.doneData, (_, currentStand) => currentStand)
+$CurrentStand.on(getUserStandsFx.doneData, (_, currentStand) => currentStand)
 $standsIsLoading
   .on(setIsStandsLoadingEvent, (_, isLoading) => isLoading)
-  .on($stands, (_) => false)
+  .on([$stands, $CurrentStand], (_) => false)
 
 guard({
   clock: getStandsEvent,
@@ -20,11 +21,9 @@ guard({
   target: getAllStandFx
 })
 
-guard({
-  clock: getStandsEvent,
-  source: getStandsEvent,
-  filter: (path: string) => path === "/my-stands",
-  target: setStandFx
+sample({
+  clock: getUserStandEvent,
+  source: getUserStandEvent,
+  target: getUserStandsFx
 })
-
 

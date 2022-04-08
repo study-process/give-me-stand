@@ -7,19 +7,19 @@ import {
 import { domain } from "../domain";
 import { setIsStandsLoadingEvent } from "./events";
 
-const FetchStandById = async (
+const FetchStandById = async (userId: number
 ) => {
   const { data, loading, error } = await useQuery(
     GET_STAND_BY_ID,
     {
-      variables: { id: '1-01' },
+      variables: { userId: userId },
     },
   )
   if (loading) {
-    setUserIsLoadingEvent(true)
+    setIsStandsLoadingEvent(true)
   }
   if (!error) {
-    return data
+    return data?.stands
   }
   throw error
 }
@@ -37,5 +37,5 @@ const FetchAllStands = async () => {
   throw error
 }
 
-export const setStandFx = domain.createEffect(FetchStandById)
+export const getUserStandsFx = domain.createEffect(FetchStandById)
 export const getAllStandFx = domain.createEffect(FetchAllStands)

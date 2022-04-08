@@ -9,6 +9,7 @@ export const GET_ALL_STANDS = gql`
           comments
           isBusy
           whoIsBusy
+          userId
       }
   }
 `
