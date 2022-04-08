@@ -4,31 +4,31 @@ import { Skeleton, Card, Avatar, Button, Descriptions, Tooltip} from 'antd';
 import { CommentOutlined } from '@ant-design/icons';
 import { statusTypeEnum } from "./constants";
 import {statusBusyStyle, statusFreeStyle} from './styles'
-import cc from "classcat"
 
 const { Meta } = Card;
 const itemStyle = { fontSize: "0.75rem" }
 const labelStyle = { fontSize: "0.75rem", fontWeight: "bold" }
 
-export const StandCard: FC<StandCardProps> = ({loading}) => {
-  const standId = '1-01'
-  const standLink = `https://dev${standId}-beta.pcbltools.ru/`
-  const branch = `bug/EDU-103040.fix_edu_dsdfsfdsf_sdfdsf(sd2342234)`
-  const whoIsBusy = 'Иванов И.'
-  const busyUntil = '01.01.2021'
-  const isBusy = true
-  const comment = 'Не трогайте, пожалуйста, это мой!'
+export const StandCard: FC<StandCardProps> = ({
+  loading,
+  id,
+  isBusy,
+  whoIsBusy,
+  busyUntil,
+  branch,
+  comments,
+}) => {
 
+  const standLink = `https://dev${id}-beta.pcbltools.ru/`
   const isButtonDisabled = loading || isBusy
-
   const status = isBusy ? statusTypeEnum.busy : statusTypeEnum.free
 
   return (
     <Card
-      style={{ width: 300, marginTop: 16 }}
+      style={{ width: 300, marginTop: 16, display: 'flex', justifyContent: 'space-between', flexDirection: 'column' }}
       actions={[
-        <Tooltip title={comment}>
-          <CommentOutlined style={{ fontSize: '180%'}}/>
+        <Tooltip title={comments}>
+          <CommentOutlined style={{ fontSize: '180%'}} hidden={!comments}/>
         </Tooltip>,
         <Button type="primary" disabled={isButtonDisabled}>Занять</Button>,
       ]}
@@ -43,12 +43,12 @@ export const StandCard: FC<StandCardProps> = ({loading}) => {
               column={1} size="small"
               title={
               <Button type="link" size='small' href={standLink} target="_blank">
-                {standId}
+                {id}
               </Button>
             }>
               <Descriptions.Item label="Branch" >
                 <Tooltip title={branch}>
-                  {`${branch.slice(0, 18)}...`}
+                  {`${branch?.slice(0, 18)}...`}
                 </Tooltip>
               </Descriptions.Item>
               <Descriptions.Item

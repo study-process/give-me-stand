@@ -1,9 +1,9 @@
 export interface StandCardProps {
-  loading: boolean;
+  loading?: boolean;
   id?: string;
   isBusy?: boolean;
   whoIsBusy?: string;
-  busyUntil?: any;
+  busyUntil?: string;
   branch?: string;
   comments?: string;
 }

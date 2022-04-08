@@ -1,5 +1,16 @@
-import { FC } from 'react';
+import { useStore } from 'effector-react';
+import { FC } from "react";
+import { StandsList } from "src/components/Stands";
+import { $stands, $standsIsLoading, getStandsEvent } from "../../store/stands";
+import { Spin } from "antd";
 
 export const StandsPage: FC = () => {
-  return <div>STANDS PAGE</div>
+  const isLoading = useStore($standsIsLoading)
+  const stands = useStore($stands)
+  getStandsEvent('/stands')
+
+  return <>
+    {isLoading && <Spin size="large" />}
+    <StandsList stands={stands} isLoading={isLoading}/>
+  </>
 }

@@ -1,24 +1,28 @@
-import { FC } from 'react'
-import { Tabs } from 'antd';
+import React, { FC, useCallback, useState } from "react";
+import { Radio, Button, RadioChangeEvent } from 'antd';
 import { headerWrapperStyle } from './styles'
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { NavigationPageTypesEnum } from "src/constants";
 import { HeaderProps } from './interfaces'
-
-const { TabPane } = Tabs;
+import { getLocationEvent } from "../../store/location";
 
 export const Header: FC<HeaderProps> = ({ isVisible = true }) => {
   const navigate = useNavigate()
-  const handleChange = (key: string) => {
-    key === "1" ? navigate(NavigationPageTypesEnum.UserPage)
+  const location = useLocation()
+  getLocationEvent(location.pathname)
+
+  const onChange = (e: RadioChangeEvent) => {
+    const value = e.target.value
+    value === "1" ? navigate(NavigationPageTypesEnum.UserPage)
       : navigate(NavigationPageTypesEnum.StandsPage)
   }
+
   return <>
     {isVisible && (<div style={headerWrapperStyle}>
-      <Tabs defaultActiveKey="1" onChange={handleChange}>
-        <TabPane tab="Мои стенды" key="1" />
-        <TabPane tab="Занять стенд" key="2" />
-      </Tabs>
+      <Radio.Group onChange={onChange} defaultValue="1">
+        <Radio.Button value="1">Мои стенды</Radio.Button>
+        <Radio.Button value="2">Занять стенд</Radio.Button>
+      </Radio.Group>
     </div>)}
   </>
 }
