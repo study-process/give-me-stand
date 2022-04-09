@@ -1,20 +1,22 @@
-import { FC } from 'react';
-import { Tabs } from 'antd';
-import { UserPage, StandsPage } from 'src/pages/index';
-
-const { TabPane } = Tabs;
+import { FC, useState, useCallback } from 'react';
+import { UserPage, StandsPage } from 'src/pages';
+import { Header } from 'src/components/Header'
 
 export const MainPage: FC = () => {
+  const [isUserPageVisible, setIsUerPageVisible] = useState(true)
+
+  const handleChange = useCallback(
+    () => {
+      setIsUerPageVisible(!isUserPageVisible)
+    },
+    [isUserPageVisible]
+  );
+
   return (
-    <div className="card-container">
-      <Tabs type="card">
-        <TabPane tab="Мои стенды" key="1">
-          <UserPage />
-        </TabPane>
-        <TabPane tab="Занять стенд" key="2">
-          <StandsPage />
-        </TabPane>
-      </Tabs>
-    </div>
+    <>
+      <Header onChange={handleChange}/>
+      <UserPage isVisible={isUserPageVisible}/>
+      <StandsPage isVisible={!isUserPageVisible} />
+    </>
   )
 }

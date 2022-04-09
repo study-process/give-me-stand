@@ -1,3 +1,3 @@
 export interface HeaderProps {
-  isVisible: boolean
+  onChange: () => void
 }

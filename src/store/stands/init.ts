@@ -1,4 +1,4 @@
-import { sample, guard } from "effector";
+import { sample } from "effector";
 import {
   $CurrentStand,
   $stands,
@@ -14,10 +14,9 @@ $standsIsLoading
   .on(setIsStandsLoadingEvent, (_, isLoading) => isLoading)
   .on([$stands, $CurrentStand], (_) => false)
 
-guard({
+sample({
   clock: getStandsEvent,
   source: getStandsEvent,
-  filter: (path: string) => path === "/stands",
   target: getAllStandFx
 })
 
@@ -26,4 +25,5 @@ sample({
   source: getUserStandEvent,
   target: getUserStandsFx
 })
+
 
