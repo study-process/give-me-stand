@@ -11,20 +11,17 @@ import {
 import { CurrentRoleTypesEnum } from 'src/store/currentRole/constants'
 import { adminLoginMessageTypesEnum } from './constants'
 import { NavigationPageTypesEnum } from '../../constants'
-import { setHeaderUnVisibleEvent, setHeaderVisibleEvent } from "../../store/commonWidgets";
 
 const { Text } = Typography;
 
 export const LoginPage = () => {
-  setHeaderUnVisibleEvent()
   const navigate = useNavigate()
   const errorWarningMessage = useStore($displayErrorWarning)
 
   const handleFinish = (values: LoginCheck) => {
     if (checkIsAdmin({ ...values })) {
-      setHeaderVisibleEvent()
       setCurrentRoleEvent(CurrentRoleTypesEnum.admin)
-      navigate(NavigationPageTypesEnum.UserPage)
+      navigate(NavigationPageTypesEnum.MainPage)
     }
     setErrorWarningEvent()
   }

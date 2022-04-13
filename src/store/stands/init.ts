@@ -4,14 +4,14 @@ import {
   $stands,
   $standsIsLoading,
   getStandsEvent, getUserStandEvent, resetStandsEvent,
-  setIsStandsLoadingEvent
+  setIsStandsLoadingEvent, setIsUserStandsLoadingEvent
 } from "./index";
 import { getAllStandFx, getUserStandsFx } from "./effects";
 
 $stands.on(getAllStandFx.doneData, (_, stands) => stands).reset(resetStandsEvent)
 $CurrentStand.on(getUserStandsFx.doneData, (_, currentStand) => currentStand)
 $standsIsLoading
-  .on(setIsStandsLoadingEvent, (_, isLoading) => isLoading)
+  .on([setIsStandsLoadingEvent, setIsUserStandsLoadingEvent], (_, isLoading) => isLoading)
   .on([$stands, $CurrentStand], (_) => false)
 
 sample({

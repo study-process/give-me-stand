@@ -1,5 +1,5 @@
-import { $isHeaderDisplayed, setHeaderUnVisibleEvent, setHeaderVisibleEvent } from "./index";
+import { $isModalDisplayed, setModalUnVisibleEvent, setModalVisibleEvent } from "./index";
 
-$isHeaderDisplayed
-  .on(setHeaderVisibleEvent, (_) => true)
-  .on(setHeaderUnVisibleEvent, (_) => false)
+$isModalDisplayed
+  .on(setModalVisibleEvent, (_) => true)
+  .on(setModalUnVisibleEvent, (_) => false)

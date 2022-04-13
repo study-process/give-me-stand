@@ -17,7 +17,8 @@ export const StandCard: FC<StandCardProps> = ({
   busyUntil,
   branch,
   comments,
-  isUserStand
+  onClick,
+  isUserStand,
 }) => {
 
   const standLink = `https://dev${id}-beta.pcbltools.ru/`
@@ -31,7 +32,7 @@ export const StandCard: FC<StandCardProps> = ({
         <Tooltip title={comments}>
           <CommentOutlined style={{ fontSize: '180%'}} hidden={!comments}/>
         </Tooltip>,
-        <Button type="primary" disabled={isButtonDisabled}>
+        <Button type="primary" disabled={isButtonDisabled} onClick={onClick}>
           {isUserStand ? 'Освободить' : 'Занять'}
         </Button>,
       ]}

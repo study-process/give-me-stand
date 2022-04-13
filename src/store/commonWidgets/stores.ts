@@ -1,3 +1,3 @@
 import { domain } from '../domain'
 
-export const $isHeaderDisplayed = domain.createStore<boolean>(false)
+export const $isModalDisplayed = domain.createStore<boolean>(false)

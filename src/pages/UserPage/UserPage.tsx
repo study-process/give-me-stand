@@ -1,22 +1,18 @@
 import { useStore } from 'effector-react';
 import { StandsList } from "../../components/Stands";
-import { $CurrentStand, $standsIsLoading, getUserStandEvent } from "../../store/stands";
+import { $CurrentStand, $standsIsLoading, getStandsEvent, getUserStandEvent } from "../../store/stands";
 import { Spin } from "antd";
 import { Page } from '../interfaces'
+import { FC } from "react";
 
-export const UserPage = ({ isVisible }: Page) => {
+export const UserPage: FC<Page> = ({ userId }) => {
   const isLoading = useStore($standsIsLoading)
   const userStands = useStore($CurrentStand)
+  getUserStandEvent(userId)
 
-  getUserStandEvent(123)
-
-  if (isVisible) {
-    return <>
-      {isLoading && <Spin size="large" />}
-      {!isLoading && !userStands.length && 'Занятых стендов нет'}
-      <StandsList stands={userStands} isLoading={isLoading} isUserStand/>
-    </>
-  }
-
-  return null
+  return <>
+    {isLoading && <Spin size="large" />}
+    {!isLoading && !userStands.length && 'Занятых стендов нет'}
+    {!isLoading && <StandsList stands={userStands} isLoading={isLoading} isUserStand />}
+  </>
 }

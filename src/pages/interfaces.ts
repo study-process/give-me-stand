@@ -1,3 +1,4 @@
 export interface Page {
-  isVisible: boolean
+  isVisible?: boolean;
+  userId?: number | null;
 }

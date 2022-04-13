@@ -2,11 +2,8 @@ import { FC } from 'react'
 import { StandCard } from "../StandCard";
 import { standListStyle } from './styles'
 import { StandsListProps } from "./interfaces";
-import { Tabs } from 'antd';
 
-const { TabPane } = Tabs;
-
-export const StandsList: FC<StandsListProps> = ({stands, isLoading, isUserStand}) => {
+export const StandsList: FC<StandsListProps> = ({stands, isLoading, isUserStand, onClick}) => {
   return <div style={standListStyle}>
     {stands?.map(stand =>
       <StandCard
@@ -19,6 +16,7 @@ export const StandsList: FC<StandsListProps> = ({stands, isLoading, isUserStand}
         branch={stand.branch}
         key={stand.id}
         isUserStand={isUserStand}
+        onClick={onClick}
       />)
     }
   </div>

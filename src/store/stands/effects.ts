@@ -5,9 +5,9 @@ import {
   GET_STAND_BY_ID
 } from "src/gql";
 import { domain } from "../domain";
-import { setIsStandsLoadingEvent } from "./events";
+import { setIsStandsLoadingEvent, setIsUserStandsLoadingEvent } from "./events";
 
-const FetchStandById = async (userId: number
+const FetchStandById = async (userId: number | null | undefined
 ) => {
   const { data, loading, error } = await useQuery(
     GET_STAND_BY_ID,
@@ -16,7 +16,7 @@ const FetchStandById = async (userId: number
     },
   )
   if (loading) {
-    setIsStandsLoadingEvent(true)
+    setIsUserStandsLoadingEvent(true)
   }
   if (!error) {
     return data?.stands
