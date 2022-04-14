@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { DatePicker, Form, Input, Modal as ModalAntd, Switch } from "antd";
 import { useStore } from 'effector-react'
 import { $isModalDisplayed, setModalUnVisibleEvent } from "src/store/commonWidgets";
+import moment from 'moment'
 
 const disabledPeriod = () => {
  const today = Date.now();
@@ -53,7 +54,12 @@ export const Modal: FC = ({ children}) => {
         </Form.Item>
         <Form.Item label="Занять до: " required >
           <DatePicker
-
+            disabledDate ={(current) => {
+              const startDate = moment().subtract(1, 'days');
+              const endDate = moment().add(10, 'days');
+              return current < startDate || current > endDate;
+            }
+          }
           />
         </Form.Item>
         <Form.Item label="Можно проксироваться: " valuePropName="checked">
