@@ -4,28 +4,33 @@ import { useStore } from 'effector-react'
 import { $isModalDisplayed, setModalUnVisibleEvent } from "src/store/commonWidgets";
 import moment from 'moment'
 
-const disabledPeriod = () => {
- const today = Date.now();
- const maxDate = new Date(today + 7)
-  return maxDate
+const disabledPeriodToStand = (current: moment.Moment) => {
+  const startDate = moment().subtract(1, 'days');
+  const endDate = moment().add(7, 'days');
+  return current < startDate || current > endDate;
 }
 
-export const Modal: FC = ({ children}) => {
+export const Modal: FC = () => {
   const isModalVisible = useStore($isModalDisplayed)
+  const [form] = Form.useForm();
+
   const standId = '1-01'
   const whoIsBusy = 'Иванов Иван'
 
-  const today = Date.now();
-  const maxDate = new Date(today + 7)
-
   const handleOk = () => {
     //TODO: заменить на отправку мутации в БД, чтобы стенд стал занятым
+    form.submit()
     console.log('стенд занят')
     setModalUnVisibleEvent()
   };
 
+  const handleSubmit = (values: {}) => {
+    console.log(values)
+  }
+
   const handleCancel = () => {
     setModalUnVisibleEvent()
+    form.resetFields()
   };
 
   return (
@@ -39,33 +44,27 @@ export const Modal: FC = ({ children}) => {
       centered
     >
       <Form
+        form={form}
+        onFinish={handleSubmit}
         labelCol={{ span: 10 }}
         layout="horizontal"
         labelAlign='right'
       >
-        <Form.Item label="Номер стенда: ">
-          <Input value={standId} disabled />
+        <Form.Item label="Номер стенда: " name="standId" initialValue={standId}>
+          <Input disabled />
         </Form.Item>
-        <Form.Item label="Ветка: " required >
+        <Form.Item label="Ветка: " required name="branch">
           <Input />
         </Form.Item>
-        <Form.Item label="Занял: ">
-          <Input value={whoIsBusy} disabled/>
+        <Form.Item label="Занял: " name="whoIsBusy" initialValue={whoIsBusy}>
+          <Input disabled />
         </Form.Item>
-        <Form.Item label="Занять до: " required >
+        <Form.Item label="Занять до: " required name="busyUntil">
           <DatePicker
-            disabledDate ={(current) => {
-              const startDate = moment().subtract(1, 'days');
-              const endDate = moment().add(10, 'days');
-              return current < startDate || current > endDate;
-            }
-          }
+            disabledDate ={disabledPeriodToStand}
           />
         </Form.Item>
-        <Form.Item label="Можно проксироваться: " valuePropName="checked">
-          <Switch />
-        </Form.Item>
-        <Form.Item label="Комментарии: ">
+        <Form.Item label="Комментарии: " name="comments">
           <Input />
         </Form.Item>
       </Form>
