@@ -1,27 +1,21 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Modal as ModalAntd, Typography } from "antd";
 import { useStore } from 'effector-react'
 import { $isModalWarningDisplayed, setModalWarningUnVisibleEvent } from "src/store/commonWidgets";
+import { releaseStandEvent } from "../../../store/stands";
 
-export const ModalSubmit: FC = () => {
-  const isModalVisible = useStore($isModalWarningDisplayed)
-
-  const handleOk = () => {
-    //TODO: заменить на отправку мутации в БД, чтобы стенд стал свободным
-    console.log('стенд свободен')
-    setModalWarningUnVisibleEvent()
-  };
-
-  const handleCancel = () => {
-    setModalWarningUnVisibleEvent()
-  };
+export const ModalSubmit: FC<{
+  isVisible: boolean,
+  onSubmit: () => void,
+  onCancel: () => void,
+}> = ({ isVisible , onSubmit, onCancel}) => {
 
   return (
     <ModalAntd
       title="Внести информацию"
-      visible={isModalVisible}
-      onOk={handleOk}
-      onCancel={handleCancel}
+      visible={isVisible}
+      onOk={onSubmit}
+      onCancel={onCancel}
       okText='Подтвердить'
       cancelText='Отмена'
       centered

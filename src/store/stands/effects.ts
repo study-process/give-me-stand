@@ -1,8 +1,8 @@
-import { currentUser, setUserIsLoadingEvent } from "../currentUser";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import {
   GET_ALL_STANDS,
-  GET_STAND_BY_ID
+  GET_STAND_BY_ID,
+  RELEASE_STAND_BY_ID
 } from "src/gql";
 import { domain } from "../domain";
 import { setIsStandsLoadingEvent, setIsUserStandsLoadingEvent } from "./events";
@@ -37,5 +37,19 @@ const FetchAllStands = async () => {
   throw error
 }
 
+const releaseStand = (id: string) => {
+  const [ReleaseStandByID, { error, data }] = useMutation(RELEASE_STAND_BY_ID)
+  if (!error) {
+    console.log(data)
+    return ReleaseStandByID({
+      variables: {
+        id: id,
+      },
+    })
+  }
+  throw error
+}
+
 export const getUserStandsFx = domain.createEffect(FetchStandById)
 export const getAllStandFx = domain.createEffect(FetchAllStands)
+export const releaseStandFx = domain.createEffect(releaseStand)

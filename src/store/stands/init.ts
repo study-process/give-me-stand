@@ -1,18 +1,25 @@
-import { sample } from "effector";
+import { sample, forward } from "effector";
 import {
   $CurrentStand,
   $stands,
   $standsIsLoading,
   getStandsEvent, getUserStandEvent, resetStandsEvent,
-  setIsStandsLoadingEvent, setIsUserStandsLoadingEvent
+  setIsStandsLoadingEvent, setIsUserStandsLoadingEvent, releaseStandEvent, $standForRelease, releaseUserStandEvent
 } from "./index";
-import { getAllStandFx, getUserStandsFx } from "./effects";
+import { getAllStandFx, getUserStandsFx, releaseStandFx } from "./effects";
 
 $stands.on(getAllStandFx.doneData, (_, stands) => stands).reset(resetStandsEvent)
-$CurrentStand.on(getUserStandsFx.doneData, (_, currentStand) => currentStand)
+$CurrentStand
+  .on(getUserStandsFx.doneData, (_, currentStand) => currentStand)
+  // .on(releaseUserStandEvent, (state, standForRelease) => {
+  //   state.filter(stand => stand?.id !== standForRelease)
+  // })
+
 $standsIsLoading
   .on([setIsStandsLoadingEvent, setIsUserStandsLoadingEvent], (_, isLoading) => isLoading)
   .on([$stands, $CurrentStand], (_) => false)
+
+$standForRelease.on(releaseStandEvent, (_, standId) => standId)
 
 sample({
   clock: getStandsEvent,
@@ -24,6 +31,11 @@ sample({
   clock: getUserStandEvent,
   source: getUserStandEvent,
   target: getUserStandsFx
+})
+
+forward({
+  from: $standForRelease,
+  to: releaseStandFx,
 })
 
 
