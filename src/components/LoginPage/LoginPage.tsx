@@ -23,6 +23,7 @@ export const LoginPage = () => {
       setCurrentRoleEvent(CurrentRoleTypesEnum.admin)
       navigate(NavigationPageTypesEnum.MainPage)
     }
+
     setErrorWarningEvent()
   }
 

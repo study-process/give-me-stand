@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from "react";
 import { useStore } from 'effector-react';
 import { StandsList } from "../../components/Stands";
 import {
@@ -17,7 +17,6 @@ import { GET_STAND_BY_ID, RELEASE_STAND_BY_ID } from "src/gql";
 
 export const UserPage: FC<Page> = ({ userId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [openStand, setOpenStand] = useState('')
 
   const isStandsLoading = useStore($standsIsLoading)
   const userStands = useStore($CurrentStand)
@@ -30,18 +29,18 @@ export const UserPage: FC<Page> = ({ userId }) => {
     setIsModalOpen(true)
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     ReleaseStandByID({
       variables: { id: standForRelease },
       refetchQueries: [
         {query: GET_STAND_BY_ID,
-        variables: { userId: userId}
+          variables: { userId: userId}
         }
       ],
       awaitRefetchQueries: true,
     })
     setIsModalOpen(false)
-  };
+  }, [standForRelease, userId])
 
   const handleCancel = () => {
     setIsModalOpen(false)
