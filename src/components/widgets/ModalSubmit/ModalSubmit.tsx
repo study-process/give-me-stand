@@ -1,14 +1,12 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { Modal as ModalAntd, Typography } from "antd";
-import { useStore } from 'effector-react'
-import { $isModalWarningDisplayed, setModalWarningUnVisibleEvent } from "src/store/commonWidgets";
-import { releaseStandEvent } from "../../../store/stands";
 
 export const ModalSubmit: FC<{
   isVisible: boolean,
-  onSubmit: () => void,
+  onSubmit: ((e: React.MouseEvent<HTMLElement, MouseEvent>) => void) | undefined,
   onCancel: () => void,
-}> = ({ isVisible , onSubmit, onCancel}) => {
+  standId?: string,
+}> = ({ isVisible , onSubmit, onCancel, standId}) => {
 
   return (
     <ModalAntd
@@ -21,7 +19,7 @@ export const ModalSubmit: FC<{
       centered
     >
       <Typography>
-        Вы уверены, что хотите освободить стенд?
+        {`Вы уверены, что хотите освободить стенд ${standId}?`}
       </Typography>
     </ModalAntd>
   );

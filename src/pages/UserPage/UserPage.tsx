@@ -1,44 +1,45 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useStore } from 'effector-react';
 import { StandsList } from "../../components/Stands";
 import {
   $CurrentStand,
-  $standForRelease,
+  $openStand,
   $standsIsLoading,
   getUserStandEvent,
-  releaseStandEvent, releaseUserStandEvent
+  releaseStandEvent, releaseUserStandEvent, resetOpenStandEvent
 } from "src/store/stands";
 import { Spin } from "antd";
 import { Page } from '../interfaces'
 import { FC, useState } from "react";
 import { ModalSubmit } from "src/components/widgets/ModalSubmit/ModalSubmit";
 import { useMutation } from "@apollo/client";
-import { RELEASE_STAND_BY_ID } from "src/gql";
+import { GET_STAND_BY_ID, RELEASE_STAND_BY_ID } from "src/gql";
 
 export const UserPage: FC<Page> = ({ userId }) => {
-  const isLoading = useStore($standsIsLoading)
-  const userStands = useStore($CurrentStand)
-  const standForRelease = useStore($standForRelease)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  getUserStandEvent(123)
-  console.log(userStands)
+  const [openStand, setOpenStand] = useState('')
 
+  const isStandsLoading = useStore($standsIsLoading)
+  const userStands = useStore($CurrentStand)
+  const standForRelease = useStore($openStand)
   const [ReleaseStandByID, { loading }] = useMutation(RELEASE_STAND_BY_ID)
-
-  useEffect(() => {
-    console.log('стэнд для освобождения изменился на', standForRelease)
-    getUserStandEvent(userId)
-  }, [standForRelease]);
+  const isLoading = isStandsLoading || loading
+  getUserStandEvent(userId)
 
   const handleClick = () => {
     setIsModalOpen(true)
   }
 
   const handleSubmit = () => {
-    console.log('стенд свободен')
-    releaseStandEvent('1-01')
-    ReleaseStandByID({variables: { id: '1-01' }})
-    releaseUserStandEvent('1-01')
+    ReleaseStandByID({
+      variables: { id: standForRelease },
+      refetchQueries: [
+        {query: GET_STAND_BY_ID,
+        variables: { userId: userId}
+        }
+      ],
+      awaitRefetchQueries: true,
+    })
     setIsModalOpen(false)
   };
 
@@ -47,9 +48,9 @@ export const UserPage: FC<Page> = ({ userId }) => {
   };
 
   return <>
-    <ModalSubmit isVisible={isModalOpen} onSubmit={handleSubmit} onCancel={handleCancel}/>
+    <ModalSubmit isVisible={isModalOpen} onSubmit={handleSubmit} onCancel={handleCancel} standId={standForRelease}/>
     {isLoading && <Spin size="large" />}
-    {!isLoading && !userStands.length && !loading && 'Занятых стендов нет'}
-    {!isLoading && !loading && userStands.length > 0 && <StandsList stands={userStands} isLoading={isLoading} isUserStand onClick={handleClick}/>}
+    {!isLoading && !userStands.length && 'Занятых стендов нет'}
+    {!isLoading && userStands.length > 0 && <StandsList stands={userStands} isLoading={isLoading} isUserStand onClick={handleClick}/>}
   </>
 }

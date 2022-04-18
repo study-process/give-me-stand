@@ -4,5 +4,5 @@ export interface StandsListProps {
   stands: StandCardProps[];
   isLoading: boolean;
   isUserStand?: boolean;
-  onClick?: () => void;
+  onClick: () => void;
 }

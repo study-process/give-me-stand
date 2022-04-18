@@ -7,5 +7,5 @@ export interface StandCardProps {
   branch?: string;
   comments?: string;
   isUserStand?: boolean;
-  onClick?: () => void;
+  onClick: () => void;
 }

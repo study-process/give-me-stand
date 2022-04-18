@@ -4,6 +4,7 @@ import { Skeleton, Card, Avatar, Button, Descriptions, Tooltip} from 'antd';
 import { CommentOutlined } from '@ant-design/icons';
 import { statusTypeEnum } from "./constants";
 import {statusBusyStyle, statusFreeStyle} from './styles'
+import { setOpenStandEvent } from "src/store/stands";
 
 const { Meta } = Card;
 const itemStyle = { fontSize: "0.75rem" }
@@ -24,6 +25,12 @@ export const StandCard: FC<StandCardProps> = ({
   const standLink = `https://dev${id}-beta.pcbltools.ru/`
   const isButtonDisabled = loading || isBusy && !isUserStand
   const status = isBusy ? statusTypeEnum.busy : statusTypeEnum.free
+  const setOpenStand = () => id ? setOpenStandEvent(id) : null
+
+  const handleClick = () => {
+    setOpenStand()
+    onClick()
+  }
 
   return (
     <Card
@@ -32,7 +39,7 @@ export const StandCard: FC<StandCardProps> = ({
         <Tooltip title={comments}>
           <CommentOutlined style={{ fontSize: '180%'}} hidden={!comments}/>
         </Tooltip>,
-        <Button type="primary" disabled={isButtonDisabled} onClick={onClick}>
+        <Button type="primary" disabled={isButtonDisabled} onClick={handleClick}>
           {isUserStand ? 'Освободить' : 'Занять'}
         </Button>,
       ]}
@@ -46,7 +53,7 @@ export const StandCard: FC<StandCardProps> = ({
               labelStyle={labelStyle}
               column={1} size="small"
               title={
-              <Button type="link" size='small' href={standLink} target="_blank">
+              <Button type="link" size='small' href={standLink} target="_blank" name="standId">
                 {id}
               </Button>
             }>
