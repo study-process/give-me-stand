@@ -1,10 +1,11 @@
-import {  FC } from 'react'
+import { FC, useEffect } from "react";
 import { StandCardProps } from './interfaces'
 import { Skeleton, Card, Avatar, Button, Descriptions, Tooltip} from 'antd';
 import { CommentOutlined } from '@ant-design/icons';
 import { statusTypeEnum } from "./constants";
 import {statusBusyStyle, statusFreeStyle} from './styles'
-import { setOpenStandEvent } from "src/store/stands";
+import { $openStand, resetOpenStandEvent, setOpenStandEvent } from "src/store/stands";
+import { useStore } from "effector-react";
 
 const { Meta } = Card;
 const itemStyle = { fontSize: "0.75rem" }
@@ -21,15 +22,13 @@ export const StandCard: FC<StandCardProps> = ({
   onClick,
   isUserStand,
 }) => {
-
   const standLink = `https://dev${id}-beta.pcbltools.ru/`
   const isButtonDisabled = loading || isBusy && !isUserStand
   const status = isBusy ? statusTypeEnum.busy : statusTypeEnum.free
-  const setOpenStand = () => id ? setOpenStandEvent(id) : null
 
   const handleClick = () => {
-    setOpenStand()
     onClick()
+    setOpenStandEvent(id)
   }
 
   return (

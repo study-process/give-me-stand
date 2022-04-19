@@ -1,8 +1,15 @@
-import React, { FC } from 'react';
-import { DatePicker, Form, Input, Modal as ModalAntd, Switch } from "antd";
-import { useStore } from 'effector-react'
-import { $isModalDisplayed, setModalUnVisibleEvent } from "src/store/commonWidgets";
+import React, { FC, useEffect } from "react";
+import { DatePicker, Form, Input, Modal as ModalAntd, Typography } from "antd";
 import moment from 'moment'
+import {
+  $openStand,
+  resetOpenStandEvent,
+  setIsStandsLoadingEvent,
+  setOpenStandToTakeEvent
+} from "../../../store/stands";
+import { useStore } from "effector-react";
+import { GET_ALL_STANDS, GET_STAND_BY_ID, TAKE_STAND_BY_ID } from "../../../gql";
+import { useMutation } from "@apollo/client";
 
 const disabledPeriodToStand = (current: moment.Moment) => {
   const startDate = moment().subtract(1, 'days');
@@ -10,33 +17,81 @@ const disabledPeriodToStand = (current: moment.Moment) => {
   return current < startDate || current > endDate;
 }
 
-export const Modal: FC = () => {
-  const isModalVisible = useStore($isModalDisplayed)
+export const Modal: FC<{
+  isVisible: boolean,
+  onSubmit: () => void,
+  onCancel: () => void,
+}> = (
+  { isVisible , onSubmit, onCancel }
+) => {
   const [form] = Form.useForm();
+  const [TakeStandByID, {loading, error, data}] = useMutation(TAKE_STAND_BY_ID)
 
-  const standId = '1-01'
+  useEffect(() => {
+    if (loading) {
+      setIsStandsLoadingEvent(true)
+    }
+  }, [loading])
+
+  useEffect(() => {
+    if (error || data) {
+      setIsStandsLoadingEvent(false)
+    }
+  }, [error])
+
+  const standId = useStore($openStand)
   const whoIsBusy = 'Иванов Иван'
+  const userId = 123
 
   const handleOk = () => {
-    //TODO: заменить на отправку мутации в БД, чтобы стенд стал занятым
     form.submit()
-    console.log('стенд занят')
-    setModalUnVisibleEvent()
+    const formValues = form.getFieldsValue()
+
+    setOpenStandToTakeEvent({
+      id: standId,
+      userId: userId,
+      branch: formValues.branch,
+      whoIsBusy: whoIsBusy,
+      busyUntil: String(formValues.busyUntil),
+      comments: formValues.comments,
+    })
+
+    TakeStandByID({
+      variables: {
+        id: standId,
+        userId: userId,
+        branch: formValues?.branch,
+        whoIsBusy: whoIsBusy,
+        busyUntil: String(formValues.busyUntil),
+        comments: formValues?.comments,
+      },
+      refetchQueries: [
+        {query: GET_ALL_STANDS
+        },
+        {query: GET_STAND_BY_ID,
+          variables: { userId: userId}
+        }
+      ],
+      awaitRefetchQueries: true,
+    })
+
+    setIsStandsLoadingEvent(false)
+
+    onSubmit()
+    form.resetFields()
+    return onSubmit()
   };
 
-  const handleSubmit = (values: {}) => {
-    console.log(values)
-  }
-
   const handleCancel = () => {
-    setModalUnVisibleEvent()
+    onCancel()
     form.resetFields()
+    resetOpenStandEvent()
   };
 
   return (
     <ModalAntd
       title="Внести информацию"
-      visible={isModalVisible}
+      visible={isVisible}
       onOk={handleOk}
       onCancel={handleCancel}
       okText='Подтвердить'
@@ -45,19 +100,15 @@ export const Modal: FC = () => {
     >
       <Form
         form={form}
-        onFinish={handleSubmit}
+        onFinishFailed={() => alert('error')}
         labelCol={{ span: 10 }}
         layout="horizontal"
         labelAlign='right'
       >
-        <Form.Item label="Номер стенда: " name="standId" initialValue={standId}>
-          <Input disabled />
-        </Form.Item>
+        <Typography.Paragraph strong >Номер стенда: {standId}</Typography.Paragraph>
+        <Typography.Paragraph>Занял: {whoIsBusy}</Typography.Paragraph>
         <Form.Item label="Ветка: " required name="branch">
           <Input />
-        </Form.Item>
-        <Form.Item label="Занял: " name="whoIsBusy" initialValue={whoIsBusy}>
-          <Input disabled />
         </Form.Item>
         <Form.Item label="Занять до: " required name="busyUntil">
           <DatePicker

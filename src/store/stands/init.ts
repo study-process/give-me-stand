@@ -11,7 +11,7 @@ import {
   releaseStandEvent,
   $standForRelease,
   releaseUserStandEvent,
-  $openStand, setOpenStandEvent
+  $openStand, setOpenStandEvent, setOpenStandToTakeEvent, $openStandToTake, resetOpenStandEvent
 } from "./index";
 import { getAllStandFx, getUserStandsFx, releaseStandFx } from "./effects";
 
@@ -28,7 +28,9 @@ $standsIsLoading
 
 $standForRelease.on(releaseStandEvent, (_, standId) => standId)
 
-$openStand.on(setOpenStandEvent, (_, stand) => stand).reset()
+$openStand.on(setOpenStandEvent, (_, stand) => stand).reset(resetOpenStandEvent)
+
+$openStandToTake.on(setOpenStandToTakeEvent, (_, stand) => stand)
 
 sample({
   clock: getStandsEvent,

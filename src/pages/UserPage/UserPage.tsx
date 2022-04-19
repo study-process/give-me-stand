@@ -48,8 +48,8 @@ export const UserPage: FC<Page> = ({ userId }) => {
 
   return <>
     <ModalSubmit isVisible={isModalOpen} onSubmit={handleSubmit} onCancel={handleCancel} standId={standForRelease}/>
-    {isLoading && <Spin size="large" />}
-    {!isLoading && !userStands.length && 'Занятых стендов нет'}
-    {!isLoading && userStands.length > 0 && <StandsList stands={userStands} isLoading={isLoading} isUserStand onClick={handleClick}/>}
+    {isLoading && userStands.length === 0 && <Spin size="large" />}
+    {!isLoading && userStands.length === 0 && 'Занятых стендов нет'}
+    <StandsList stands={userStands} isLoading={isLoading} isUserStand onClick={handleClick}/>
   </>
 }
