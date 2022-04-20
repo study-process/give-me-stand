@@ -105,8 +105,22 @@ export const Modal: FC<{
         layout="horizontal"
         labelAlign='right'
       >
-        <Typography.Paragraph strong >Номер стенда: {standId}</Typography.Paragraph>
-        <Typography.Paragraph>Занял: {whoIsBusy}</Typography.Paragraph>
+        <Typography.Paragraph strong style={{
+          display: 'flex',
+          justifyContent: 'center'
+        }}
+        >
+          Номер стенда: {standId}
+        </Typography.Paragraph>
+        <Typography.Paragraph
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginBottom: '2rem',
+          }}
+        >
+          Занял: {whoIsBusy}
+        </Typography.Paragraph>
         <Form.Item label="Ветка: " required name="branch">
           <Input />
         </Form.Item>
