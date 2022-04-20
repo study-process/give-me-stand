@@ -1,11 +1,10 @@
-import { FC, useEffect } from "react";
+import { FC, useMemo } from "react";
 import { StandCardProps } from './interfaces'
 import { Skeleton, Card, Avatar, Button, Descriptions, Tooltip} from 'antd';
 import { CommentOutlined } from '@ant-design/icons';
 import { statusTypeEnum } from "./constants";
 import {statusBusyStyle, statusFreeStyle} from './styles'
-import { $openStand, resetOpenStandEvent, setOpenStandEvent } from "src/store/stands";
-import { useStore } from "effector-react";
+import { setOpenStandEvent } from "src/store/stands";
 
 const { Meta } = Card;
 const itemStyle = { fontSize: "0.75rem" }
@@ -22,9 +21,21 @@ export const StandCard: FC<StandCardProps> = ({
   onClick,
   isUserStand,
 }) => {
+  const parseDate = busyUntil ? Date.parse(busyUntil) : ''
+  const isBusyDateActual = parseDate > Date.now()
+  const dateToDisplay = useMemo(() => busyUntil ? new Date(busyUntil).toLocaleDateString('ru-RU', {
+    day: '2-digit',
+    month: '2-digit',
+    year: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  }) : '', [busyUntil])
+
   const standLink = `https://dev${id}-beta.pcbltools.ru/`
-  const isButtonDisabled = loading || isBusy && !isUserStand
-  const status = isBusy ? statusTypeEnum.busy : statusTypeEnum.free
+  const isButtonDisabled = loading || isBusy && !isUserStand && isBusyDateActual
+  const status = isBusy && isBusyDateActual ? statusTypeEnum.busy : statusTypeEnum.free
+  const isStandBusy = status === statusTypeEnum.busy
+  const branchName = useMemo(() => branch && branch?.length > 16 ? `${branch?.slice(0, 16)}...` : branch, [branch])
 
   const handleClick = () => {
     onClick()
@@ -56,21 +67,21 @@ export const StandCard: FC<StandCardProps> = ({
                 {id}
               </Button>
             }>
-              <Descriptions.Item label="Branch" >
-                <Tooltip title={branch}>
-                  {`${branch?.slice(0, 18)}...`}
-                </Tooltip>
-              </Descriptions.Item>
               <Descriptions.Item
                 label="Статус"
-                style={isBusy ? statusBusyStyle : statusFreeStyle}
+                style={isStandBusy ? statusBusyStyle : statusFreeStyle}
               >
                 {status}
               </Descriptions.Item>
-              {isBusy && (
+              {isStandBusy && (
                 <>
+                  <Descriptions.Item label="Branch" >
+                    <Tooltip title={branch}>
+                      {branchName}
+                    </Tooltip>
+                  </Descriptions.Item>
                   <Descriptions.Item label="Занят" >{whoIsBusy}</Descriptions.Item>
-                  <Descriptions.Item label="Занят до" >{busyUntil}</Descriptions.Item>
+                  <Descriptions.Item label="Занят до" >{dateToDisplay}</Descriptions.Item>
                 </>
               )}
             </Descriptions>

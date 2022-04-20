@@ -12,7 +12,7 @@ import { GET_ALL_STANDS, GET_STAND_BY_ID, TAKE_STAND_BY_ID } from "../../../gql"
 import { useMutation } from "@apollo/client";
 
 const disabledPeriodToStand = (current: moment.Moment) => {
-  const startDate = moment().subtract(1, 'days');
+  const startDate = moment().subtract(0, 'days');
   const endDate = moment().add(7, 'days');
   return current < startDate || current > endDate;
 }
