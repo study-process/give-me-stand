@@ -1,33 +1,49 @@
 import { useNavigate } from 'react-router-dom'
 import { useStore } from 'effector-react'
-import { checkIsAdmin } from 'src/utils/checkIsAdmin'
 import { Form, Input, Button, Alert, Space, Typography } from 'antd'
 import { LoginCheck } from 'src/interfaces'
 import {
-  setCurrentRoleEvent,
   $displayErrorWarning,
   setErrorWarningEvent, setCurrentUserEvent
 } from "src/store";
-import { CurrentRoleTypesEnum } from 'src/store/currentRole/constants'
 import { adminLoginMessageTypesEnum } from './constants'
 import { NavigationPageTypesEnum } from '../../constants'
+import axios from "axios";
+import {
+  $serverResponseIsLoading,
+  serServerResponseEvent,
+  serServerResponseLoadingEvent,
+  serverResponse, setServerResponseErrorEvent
+} from "../../store/serverResponse";
+import { AUTHORIZED_URL } from '../../constants'
 
 const { Text } = Typography;
 
 export const LoginPage = () => {
   const navigate = useNavigate()
   const errorWarningMessage = useStore($displayErrorWarning)
+  const serverResponseIsLoading = useStore($serverResponseIsLoading)
 
   const handleFinish = (values: LoginCheck) => {
-    if (checkIsAdmin({ ...values })) {
-      setCurrentUserEvent({
-        login: values.username,
-        password: values.password,
-        userId: 123,
-      })
-      navigate(NavigationPageTypesEnum.MainPage)
-    }
-    setErrorWarningEvent()
+    serServerResponseLoadingEvent(true)
+    axios.post(AUTHORIZED_URL, {
+      "username": `${values.username}`,
+      "password": `${values.password}`,
+    }).then(response => {
+      serServerResponseEvent(response)
+      serServerResponseLoadingEvent(false)
+      if (response.data !== serverResponse.NOT_AUTHORIZED && response.status === 200) {
+        setCurrentUserEvent({
+          login: response.data.login,
+          userId: response.data.userId,
+        })
+        navigate(NavigationPageTypesEnum.MainPage)
+      }
+      if (response.data === serverResponse.NOT_AUTHORIZED) {
+        setServerResponseErrorEvent(response.data)
+        setErrorWarningEvent()
+      }
+    })
   }
 
   const handleFinishFailed = () => {
@@ -90,6 +106,7 @@ export const LoginPage = () => {
           </Button>
         </Form.Item>
       </Form>
+      {serverResponseIsLoading && <div>Ожидание ответа от сервера ...</div>}
     </Space>
   )
 }

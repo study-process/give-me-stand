@@ -12,3 +12,5 @@ export enum NavigationPageTypesEnum {
 export enum ButtonTextTypesEnum {
   Submit = 'Подтвердить',
 }
+
+export const AUTHORIZED_URL = 'http://localhost:3001/login'

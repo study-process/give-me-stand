@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useStore } from 'effector-react'
 import { UserPage, StandsPage } from 'src/pages';
 import { Header } from 'src/components/Header'
@@ -10,7 +10,7 @@ export const MainPage: FC = () => {
   const handleChange = () => setIsUserPageVisible(!isUserPageVisible)
   const currenUser = useStore($currentUser)
 
-  if (!currenUser.login) {
+  if (!currenUser.userId) {
     return <ErrorPage />
   }
 
