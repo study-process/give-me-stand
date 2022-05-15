@@ -6,7 +6,7 @@ import { LoginCheck } from 'src/interfaces'
 import {
   setCurrentRoleEvent,
   $displayErrorWarning,
-  setErrorWarningEvent,
+  setErrorWarningEvent, setCurrentUserEvent
 } from "src/store";
 import { CurrentRoleTypesEnum } from 'src/store/currentRole/constants'
 import { adminLoginMessageTypesEnum } from './constants'
@@ -20,10 +20,13 @@ export const LoginPage = () => {
 
   const handleFinish = (values: LoginCheck) => {
     if (checkIsAdmin({ ...values })) {
-      setCurrentRoleEvent(CurrentRoleTypesEnum.admin)
+      setCurrentUserEvent({
+        login: values.username,
+        password: values.password,
+        userId: 123,
+      })
       navigate(NavigationPageTypesEnum.MainPage)
     }
-
     setErrorWarningEvent()
   }
 

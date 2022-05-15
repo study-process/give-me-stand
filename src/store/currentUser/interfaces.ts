@@ -1,6 +1,5 @@
 export interface currentUser {
-  id?: number | null
-  node_id?: string
-  nickname?: string
-  name?: string
+  login?: string | null;
+  password?: string | null;
+  userId?: number | null;
 }
