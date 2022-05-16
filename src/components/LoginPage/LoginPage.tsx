@@ -36,6 +36,8 @@ export const LoginPage = () => {
         setCurrentUserEvent({
           login: response.data.login,
           userId: response.data.userId,
+          accessToken: response.data.accessToken,
+          adminSecret: response.data.adminSecret,
         })
         navigate(NavigationPageTypesEnum.MainPage)
       }

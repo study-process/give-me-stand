@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { useStore } from 'effector-react'
 import { UserPage, StandsPage } from 'src/pages';
 import { Header } from 'src/components/Header'
