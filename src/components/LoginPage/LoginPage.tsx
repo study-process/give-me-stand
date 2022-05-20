@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useStore } from 'effector-react'
-import { Form, Input, Button, Alert, Space, Typography } from 'antd'
+import { Form, Input, Button, Alert, Space, Typography, Spin } from 'antd'
 import { LoginCheck } from 'src/interfaces'
 import {
   $displayErrorWarning,
@@ -53,62 +53,63 @@ export const LoginPage = () => {
   }
 
   return (
-    <Space direction="vertical" size={32} align="center">
-      <Text code >Give Me Stand</Text>
-      {errorWarningMessage && (
-        <Alert message={adminLoginMessageTypesEnum.incorrect} type="error" />
-      )}
+    <Spin spinning={serverResponseIsLoading} delay={500}>
+      <Space direction="vertical" size={32} align="center">
+        <Text code >Give Me Stand</Text>
+        {errorWarningMessage && (
+          <Alert message={adminLoginMessageTypesEnum.incorrect} type="error" />
+        )}
 
-      <Form
-        name="basic"
-        labelCol={{
-          span: 8,
-        }}
-        wrapperCol={{
-          span: 16,
-        }}
-        onFinish={handleFinish}
-        onFinishFailed={handleFinishFailed}
-        autoComplete="off"
-      >
-        <Form.Item
-          label="Username"
-          name="username"
-          rules={[
-            {
-              required: true,
-              message: `${adminLoginMessageTypesEnum.loginIsEmpty}`,
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          label="Password"
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: `${adminLoginMessageTypesEnum.passwordIsEmpty}`,
-            },
-          ]}
-        >
-          <Input.Password />
-        </Form.Item>
-
-        <Form.Item
+        <Form
+          name="basic"
+          labelCol={{
+            span: 8,
+          }}
           wrapperCol={{
-            offset: 8,
             span: 16,
           }}
+          onFinish={handleFinish}
+          onFinishFailed={handleFinishFailed}
+          autoComplete="off"
         >
-          <Button type="primary" htmlType="submit">
-            Войти
-          </Button>
-        </Form.Item>
-      </Form>
-      {serverResponseIsLoading && <div>Ожидание ответа от сервера ...</div>}
-    </Space>
+          <Form.Item
+            label="Username"
+            name="username"
+            rules={[
+              {
+                required: true,
+                message: `${adminLoginMessageTypesEnum.loginIsEmpty}`,
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: `${adminLoginMessageTypesEnum.passwordIsEmpty}`,
+              },
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item
+            wrapperCol={{
+              offset: 8,
+              span: 16,
+            }}
+          >
+            <Button type="primary" htmlType="submit">
+              Войти
+            </Button>
+          </Form.Item>
+        </Form>
+      </Space>
+    </Spin>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { useStore } from 'effector-react';
 import { StandsList } from "../../components/Stands";
 import {
@@ -6,7 +6,6 @@ import {
   $openStand,
   $standsIsLoading,
   getUserStandEvent,
-  releaseStandEvent, releaseUserStandEvent, resetOpenStandEvent
 } from "src/store/stands";
 import { Spin } from "antd";
 import { Page } from '../interfaces'

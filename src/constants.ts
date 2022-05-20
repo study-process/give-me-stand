@@ -4,4 +4,4 @@ export enum NavigationPageTypesEnum {
   MainPage = '/main'
 }
 
-export const AUTHORIZED_URL = 'http://localhost:3001/login'
+export const AUTHORIZED_URL = 'http://localhost:8080/login'

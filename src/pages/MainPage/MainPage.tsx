@@ -9,6 +9,7 @@ export const MainPage: FC = () => {
   const [isUserPageVisible, setIsUserPageVisible] = useState(true)
   const handleChange = () => setIsUserPageVisible(!isUserPageVisible)
   const currenUser = useStore($currentUser)
+  console.log(currenUser, 'currenUser')
 
   if (!currenUser.userId) {
     return <ErrorPage />

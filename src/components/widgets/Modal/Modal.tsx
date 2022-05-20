@@ -10,6 +10,7 @@ import {
 import { useStore } from "effector-react";
 import { GET_ALL_STANDS, GET_STAND_BY_ID, TAKE_STAND_BY_ID } from "../../../gql";
 import { useMutation } from "@apollo/client";
+import { $currentUser } from "../../../store";
 
 const disabledPeriodToStand = (current: moment.Moment) => {
   const startDate = moment().subtract(0, 'days');
@@ -25,6 +26,8 @@ export const Modal: FC<{
   { isVisible , onSubmit, onCancel }
 ) => {
   const [form] = Form.useForm();
+  const currenUser = useStore($currentUser)
+  console.log(currenUser, 'currenUser')
   const [TakeStandByID, {loading, error, data}] = useMutation(TAKE_STAND_BY_ID)
 
   useEffect(() => {
@@ -40,8 +43,8 @@ export const Modal: FC<{
   }, [error])
 
   const standId = useStore($openStand)
-  const whoIsBusy = 'Иванов Иван'
-  const userId = 123
+  const whoIsBusy = currenUser.login ?? ''
+  const userId = currenUser.userId ?? 0
 
   const handleOk = () => {
     form.submit()
