@@ -20,7 +20,6 @@ export const StandsPage: FC<Page> = () => {
 
   const isStandsLoading = useStore($standsIsLoading)
   const stands = useStore($stands)
-  console.log('isStandsLoading', isStandsLoading)
 
   const isLoading = isStandsLoading
   getStandsEvent('/stands')

@@ -1,5 +1,7 @@
 import {
-  $currentUser, setCurrentUserEvent
+  $currentUser, resetCurrentUserEvent, setCurrentUserEvent
 } from "./index";
 
-$currentUser.on(setCurrentUserEvent, (_, currentUser) => currentUser)
+$currentUser
+  .on(setCurrentUserEvent, (_, currentUser) => currentUser)
+  .reset(resetCurrentUserEvent)

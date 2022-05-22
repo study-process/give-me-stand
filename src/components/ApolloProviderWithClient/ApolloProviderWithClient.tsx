@@ -18,7 +18,6 @@ export const ApolloProviderWithClient: FC = ({ children }) => {
     },
   })
 
-
   return (
     <ApolloProvider client={client}>
       {children}

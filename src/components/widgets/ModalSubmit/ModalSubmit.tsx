@@ -6,11 +6,13 @@ export const ModalSubmit: FC<{
   onSubmit: ((e: React.MouseEvent<HTMLElement, MouseEvent>) => void) | undefined,
   onCancel: () => void,
   standId?: string,
-}> = ({ isVisible , onSubmit, onCancel, standId}) => {
+  title?: string,
+  text?: string,
+}> = ({ isVisible , onSubmit, onCancel, standId, title, text}) => {
 
   return (
     <ModalAntd
-      title="Внести информацию"
+      title={title}
       visible={isVisible}
       onOk={onSubmit}
       onCancel={onCancel}
@@ -19,7 +21,8 @@ export const ModalSubmit: FC<{
       centered
     >
       <Typography>
-        {`Вы уверены, что хотите освободить стенд ${standId}?`}
+        {standId && `Вы уверены, что хотите освободить стенд ${standId}?`}
+        {text}
       </Typography>
     </ModalAntd>
   );

@@ -15,7 +15,7 @@ export const headerWrapperStyle: CSS.Properties= {
 export const headerLogoutButtonStyle: CSS.Properties= {
     position: 'fixed',
     top: '1rem',
-    right: '27rem',
+    right: '15%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

@@ -2,12 +2,18 @@ import { FC } from 'react'
 import { StandCard } from "../StandCard";
 import { standListStyle } from './styles'
 import { StandsListProps } from "./interfaces";
+import { StandCardProps } from "../StandCard/interfaces";
+
+const getStandNumber = (id: string) => Number(id.split('-')[1])
 
 export const StandsList: FC<StandsListProps> = ({stands, isLoading, isUserStand, onClick}) => {
-  const filteredStands = stands.filter(stand => stand.isBusy === true && Date.parse(stand.busyUntil ? stand?.busyUntil : '') > Date.now())
+  const filteredUserStands = stands
+    .filter(stand => stand.isBusy === true && Date.parse(stand.busyUntil ? stand?.busyUntil : '') > Date.now())
+  const standsForSort = [...stands]
+  const sortedStands = stands ? standsForSort.sort((stand: StandCardProps, stand2: StandCardProps) => getStandNumber(stand.id) - getStandNumber(stand2.id)) : []
   if (isUserStand) {
     return <div style={standListStyle}>
-      {filteredStands?.map(stand =>
+      {filteredUserStands?.map(stand =>
         <StandCard
           loading={isLoading}
           id={stand.id}
@@ -24,7 +30,7 @@ export const StandsList: FC<StandsListProps> = ({stands, isLoading, isUserStand,
     </div>
   }
   return <div style={standListStyle}>
-    {stands?.map(stand =>
+    {sortedStands?.map(stand =>
       <StandCard
         loading={isLoading}
         id={stand.id}

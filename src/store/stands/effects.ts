@@ -40,7 +40,6 @@ const FetchAllStands = async () => {
 const releaseStand = (id: string) => {
   const [ReleaseStandByID, { error, data }] = useMutation(RELEASE_STAND_BY_ID)
   if (!error) {
-    console.log(data)
     return ReleaseStandByID({
       variables: {
         id: id,

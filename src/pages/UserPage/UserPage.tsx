@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo} from "react";
 import { useStore } from 'effector-react';
 import { StandsList } from "../../components/Stands";
 import {
@@ -7,12 +7,14 @@ import {
   $standsIsLoading,
   getUserStandEvent,
 } from "src/store/stands";
-import { Spin } from "antd";
+import { Spin, Typography } from "antd";
 import { Page } from '../interfaces'
 import { FC, useState } from "react";
 import { ModalSubmit } from "src/components/widgets/ModalSubmit/ModalSubmit";
 import { useMutation } from "@apollo/client";
 import { GET_STAND_BY_ID, RELEASE_STAND_BY_ID } from "src/gql";
+
+const { Text } = Typography;
 
 export const UserPage: FC<Page> = ({ userId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -22,6 +24,7 @@ export const UserPage: FC<Page> = ({ userId }) => {
   const standForRelease = useStore($openStand)
   const [ReleaseStandByID, { loading }] = useMutation(RELEASE_STAND_BY_ID)
   const isLoading = isStandsLoading || loading
+  const findBusyUserStands = useMemo(() => userStands.find(stand => stand?.isBusy === true), [userStands])
   getUserStandEvent(userId)
 
   const handleClick = () => {
@@ -48,7 +51,7 @@ export const UserPage: FC<Page> = ({ userId }) => {
   return <>
     <ModalSubmit isVisible={isModalOpen} onSubmit={handleSubmit} onCancel={handleCancel} standId={standForRelease}/>
     {isLoading && userStands.length === 0 && <Spin size="large" />}
-    {!isLoading && userStands.length === 0 && 'Занятых стендов нет'}
+    {!isLoading && !findBusyUserStands && (<Text strong>Занятых стендов нет</Text>)}
     <StandsList stands={userStands} isLoading={isLoading} isUserStand onClick={handleClick}/>
   </>
 }

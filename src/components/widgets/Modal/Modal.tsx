@@ -27,7 +27,6 @@ export const Modal: FC<{
 ) => {
   const [form] = Form.useForm();
   const currenUser = useStore($currentUser)
-  console.log(currenUser, 'currenUser')
   const [TakeStandByID, {loading, error, data}] = useMutation(TAKE_STAND_BY_ID)
 
   useEffect(() => {
@@ -43,7 +42,7 @@ export const Modal: FC<{
   }, [error])
 
   const standId = useStore($openStand)
-  const whoIsBusy = currenUser.login ?? ''
+  const whoIsBusy = currenUser.username ?? ''
   const userId = currenUser.userId ?? 0
 
   const handleOk = () => {

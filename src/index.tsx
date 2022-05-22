@@ -5,7 +5,6 @@ import { BrowserRouter } from 'react-router-dom'
 import { ApolloProviderWithClient } from "./components/ApolloProviderWithClient";
 
 ReactDOM.render(
-  // <ApolloProvider client={client}>
   <ApolloProviderWithClient >
     <React.StrictMode>
       <BrowserRouter>
@@ -13,7 +12,5 @@ ReactDOM.render(
       </BrowserRouter>
     </React.StrictMode>
   </ApolloProviderWithClient>,
-
-  // </ApolloProvider>,
   document.getElementById('root'),
 )

@@ -36,6 +36,7 @@ export const LoginPage = () => {
         setCurrentUserEvent({
           login: response.data.login,
           userId: response.data.userId,
+          username: response.data.username,
           accessToken: response.data.accessToken,
           adminSecret: response.data.adminSecret,
         })
