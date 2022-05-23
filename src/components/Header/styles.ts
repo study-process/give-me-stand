@@ -10,6 +10,8 @@ export const headerWrapperStyle: CSS.Properties= {
     fontSize: '2rem',
     fontWeight:'bold',
     paddingTop: '1rem',
+    zIndex: '10',
+    background: 'linear-gradient(0deg, rgba(2,0,36,0) 0%, rgba(255,255,255,1) 72%)',
 }
 
 export const headerLogoutButtonStyle: CSS.Properties= {
@@ -19,4 +21,5 @@ export const headerLogoutButtonStyle: CSS.Properties= {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: '10',
 }
