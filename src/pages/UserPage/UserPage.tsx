@@ -4,17 +4,17 @@ import { StandsList } from "../../components/Stands";
 import {
   $CurrentStand,
   $openStand,
-  $standsIsLoading,
-  getUserStandEvent,
+  $standsIsLoading, deleteUserStandFromStoreEvent,
+  getUserStandEvent
 } from "src/store/stands";
-import { Spin, Typography } from "antd";
+import { Spin, Result } from "antd";
+import { CoffeeOutlined } from '@ant-design/icons';
 import { Page } from '../interfaces'
 import { FC, useState } from "react";
 import { ModalSubmit } from "src/components/widgets/ModalSubmit/ModalSubmit";
 import { useMutation } from "@apollo/client";
 import { GET_STAND_BY_ID, RELEASE_STAND_BY_ID } from "src/gql";
 
-const { Text } = Typography;
 
 export const UserPage: FC<Page> = ({ userId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -33,7 +33,7 @@ export const UserPage: FC<Page> = ({ userId }) => {
 
   const handleSubmit = useCallback(() => {
     ReleaseStandByID({
-      variables: { id: standForRelease },
+      variables: { id: standForRelease, userId: userId},
       refetchQueries: [
         {query: GET_STAND_BY_ID,
           variables: { userId: userId}
@@ -41,6 +41,7 @@ export const UserPage: FC<Page> = ({ userId }) => {
       ],
       awaitRefetchQueries: true,
     })
+    deleteUserStandFromStoreEvent(standForRelease)
     setIsModalOpen(false)
   }, [standForRelease, userId])
 
@@ -50,8 +51,13 @@ export const UserPage: FC<Page> = ({ userId }) => {
 
   return <>
     <ModalSubmit isVisible={isModalOpen} onSubmit={handleSubmit} onCancel={handleCancel} standId={standForRelease}/>
-    {isLoading && userStands.length === 0 && <Spin size="large" />}
-    {!isLoading && !findBusyUserStands && (<Text strong>Занятых стендов нет</Text>)}
+    {isLoading && !findBusyUserStands && <Spin size="large" />}
+    {!isLoading && !findBusyUserStands &&
+      (<Result
+        status="info"
+        icon={<CoffeeOutlined />}
+        title="Занятых стендов пока нет"
+      />)}
     <StandsList stands={userStands} isLoading={isLoading} isUserStand onClick={handleClick}/>
   </>
 }

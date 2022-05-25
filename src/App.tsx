@@ -1,7 +1,7 @@
 import React from 'react'
 import './App.css'
 import { Routes, Route } from 'react-router-dom'
-import { LoginPage } from 'src/components/LoginPage'
+import { LoginPage } from 'src/pages/LoginPage'
 import { MainPage } from 'src/pages/index'
 import { NavigationPageTypesEnum } from './constants'
 

@@ -11,16 +11,18 @@ import {
   releaseStandEvent,
   $standForRelease,
   releaseUserStandEvent,
-  $openStand, setOpenStandEvent, setOpenStandToTakeEvent, $openStandToTake, resetOpenStandEvent
+  $openStand,
+  setOpenStandEvent,
+  setOpenStandToTakeEvent,
+  $openStandToTake,
+  resetOpenStandEvent,
+  deleteUserStandFromStoreEvent
 } from "./index";
 import { getAllStandFx, getUserStandsFx, releaseStandFx } from "./effects";
 
 $stands.on(getAllStandFx.doneData, (_, stands) => stands).reset(resetStandsEvent)
 $CurrentStand
   .on(getUserStandsFx.doneData, (_, currentStand) => currentStand)
-  // .on(releaseUserStandEvent, (state, standForRelease) => {
-  //   state.filter(stand => stand?.id !== standForRelease)
-  // })
 
 $standsIsLoading
   .on([setIsStandsLoadingEvent, setIsUserStandsLoadingEvent], (_, isLoading) => isLoading)
@@ -42,6 +44,13 @@ sample({
   clock: getUserStandEvent,
   source: getUserStandEvent,
   target: getUserStandsFx
+})
+
+sample({
+  clock: deleteUserStandFromStoreEvent,
+  source: $CurrentStand,
+  fn: (currentStands, deletedStand) => currentStands.filter( stand => stand.id !== deletedStand),
+  target: $CurrentStand,
 })
 
 forward({

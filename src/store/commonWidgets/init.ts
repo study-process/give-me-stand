@@ -1,7 +1,7 @@
 import {
-  $isLogoutModalVisible,
+
   $isModalDisplayed,
-  $isModalWarningDisplayed, setLogoutModalVisibleEvent,
+  $isModalWarningDisplayed,
   setModalUnVisibleEvent,
   setModalVisibleEvent,
   setModalWarningUnVisibleEvent,
@@ -14,5 +14,3 @@ $isModalDisplayed
 $isModalWarningDisplayed
   .on(setModalWarningVisibleEvent, (_) => true)
   .on(setModalWarningUnVisibleEvent, (_) => false)
-
-$isLogoutModalVisible.on(setLogoutModalVisibleEvent, (_, isVisible) => isVisible)

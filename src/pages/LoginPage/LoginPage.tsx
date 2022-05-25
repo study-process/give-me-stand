@@ -37,6 +37,10 @@ export const LoginPage = () => {
           login: response.data.login,
           userId: response.data.userId,
           username: response.data.username,
+          team: response.data.team,
+          maxStandsCount: response.data.maxStandsCount,
+          isMaxUsersStandsCountEnabled: response.data.isMaxUsersStandsCountEnabled,
+          isTransferPasswordChanged: response.data.isTransferPasswordChanged,
           accessToken: response.data.accessToken,
           adminSecret: response.data.adminSecret,
         })
