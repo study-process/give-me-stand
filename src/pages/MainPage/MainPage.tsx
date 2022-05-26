@@ -1,9 +1,10 @@
-import { FC, useState, useCallback } from 'react';
+import { FC, useState } from 'react';
 import { useStore } from 'effector-react'
 import { UserPage, StandsPage } from 'src/pages';
 import { Header } from 'src/components/Header'
 import { ErrorPage } from "../ErrorPage";
 import { $currentUser } from "../../store";
+import { ChangePasswordPage } from "../ChangePasswordPage";
 
 export const MainPage: FC = () => {
   const [isUserPageVisible, setIsUserPageVisible] = useState(true)
@@ -15,7 +16,7 @@ export const MainPage: FC = () => {
   }
 
   if (!isTransferPasswordChanged) {
-    return <div>Необходимо сменить транспортный пароль</div>
+    return <ChangePasswordPage />
   }
 
   return (
