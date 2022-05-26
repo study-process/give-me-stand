@@ -2,7 +2,7 @@ import * as CSS from 'csstype'
 
 export const headerWrapperStyle: CSS.Properties= {
     position: 'fixed',
-    top: '0',
+    top: '1rem',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -11,13 +11,22 @@ export const headerWrapperStyle: CSS.Properties= {
     fontWeight:'bold',
     paddingTop: '1rem',
     zIndex: '10',
-    background: 'linear-gradient(0deg, rgba(2,0,36,0) 0%, rgba(255,255,255,1) 72%)',
 }
 
 export const headerLogoutButtonStyle: CSS.Properties= {
     position: 'fixed',
-    top: '1rem',
-    right: '15%',
+    top: '2rem',
+    right: '20%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: '10',
+}
+
+export const userAvatarStyle: CSS.Properties= {
+    position: 'fixed',
+    top: '0.5rem',
+    left: '20%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

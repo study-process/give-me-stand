@@ -7,5 +7,7 @@ export interface StandCardProps {
   branch?: string;
   comments?: string;
   isUserStand?: boolean;
+  team?: string;
   onClick: () => void;
+  isCurrentUserStandsLimitEnabled?: boolean,
 }

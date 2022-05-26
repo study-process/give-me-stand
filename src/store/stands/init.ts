@@ -1,6 +1,6 @@
 import { sample, forward } from "effector";
 import {
-  $CurrentStand,
+  $CurrentStands,
   $stands,
   $standsIsLoading,
   getStandsEvent,
@@ -10,23 +10,23 @@ import {
   setIsUserStandsLoadingEvent,
   releaseStandEvent,
   $standForRelease,
-  releaseUserStandEvent,
   $openStand,
   setOpenStandEvent,
   setOpenStandToTakeEvent,
   $openStandToTake,
   resetOpenStandEvent,
-  deleteUserStandFromStoreEvent
+  deleteUserStandFromStoreEvent, $filteredUserStands, $maxUsersStandsCount
 } from "./index";
 import { getAllStandFx, getUserStandsFx, releaseStandFx } from "./effects";
+import { $currentUser } from "../currentUser";
 
 $stands.on(getAllStandFx.doneData, (_, stands) => stands).reset(resetStandsEvent)
-$CurrentStand
+$CurrentStands
   .on(getUserStandsFx.doneData, (_, currentStand) => currentStand)
 
 $standsIsLoading
   .on([setIsStandsLoadingEvent, setIsUserStandsLoadingEvent], (_, isLoading) => isLoading)
-  .on([$stands, $CurrentStand], (_) => false)
+  .on([$stands, $CurrentStands], (_) => false)
 
 $standForRelease.on(releaseStandEvent, (_, standId) => standId)
 
@@ -48,9 +48,36 @@ sample({
 
 sample({
   clock: deleteUserStandFromStoreEvent,
-  source: $CurrentStand,
+  source: $CurrentStands,
   fn: (currentStands, deletedStand) => currentStands.filter( stand => stand.id !== deletedStand),
-  target: $CurrentStand,
+  target: $CurrentStands,
+})
+
+sample({
+  source: $CurrentStands,
+  fn: (currentStands) => currentStands.filter(stand =>
+    stand.isBusy === true
+    && Date.parse(stand.busyUntil ? stand?.busyUntil : '') > Date.now()
+  ),
+  target: $filteredUserStands,
+})
+
+sample({
+  clock: $filteredUserStands,
+  source: $currentUser,
+  fn: (currentUser, filteredUserStands) => {
+    const isCountOfUsersStandsAchieved = filteredUserStands?.length >= (currentUser?.maxStandsCount ?? 0)
+    const isMaxUsersStandsCountEnabled = currentUser?.isMaxUsersStandsCountEnabled
+    const maxUsersStandsCount = currentUser?.maxStandsCount
+    const isLimitActive = isMaxUsersStandsCountEnabled && isCountOfUsersStandsAchieved
+    return {
+      isMaxUsersStandsCountAchieved: isCountOfUsersStandsAchieved,
+      isMaxUsersStandsCountEnabled: isMaxUsersStandsCountEnabled,
+      maxUsersStandsCount: maxUsersStandsCount,
+      isUserCanReleaseStand: !isLimitActive
+    }
+  },
+  target: $maxUsersStandsCount,
 })
 
 forward({

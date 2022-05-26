@@ -1,7 +1,7 @@
 import {
-
+  $isDarkMode,
   $isModalDisplayed,
-  $isModalWarningDisplayed,
+  $isModalWarningDisplayed, setDarkModeEvent,
   setModalUnVisibleEvent,
   setModalVisibleEvent,
   setModalWarningUnVisibleEvent,
@@ -14,3 +14,6 @@ $isModalDisplayed
 $isModalWarningDisplayed
   .on(setModalWarningVisibleEvent, (_) => true)
   .on(setModalWarningUnVisibleEvent, (_) => false)
+
+$isDarkMode.on(
+  setDarkModeEvent, (_, isDarkMode) => isDarkMode)

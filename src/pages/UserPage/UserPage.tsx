@@ -2,12 +2,12 @@ import React, { useCallback, useMemo} from "react";
 import { useStore } from 'effector-react';
 import { StandsList } from "../../components/Stands";
 import {
-  $CurrentStand,
+  $CurrentStands,
   $openStand,
   $standsIsLoading, deleteUserStandFromStoreEvent,
   getUserStandEvent
 } from "src/store/stands";
-import { Spin, Result } from "antd";
+import { Spin, Result, Empty } from "antd";
 import { CoffeeOutlined } from '@ant-design/icons';
 import { Page } from '../interfaces'
 import { FC, useState } from "react";
@@ -20,7 +20,7 @@ export const UserPage: FC<Page> = ({ userId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const isStandsLoading = useStore($standsIsLoading)
-  const userStands = useStore($CurrentStand)
+  const userStands = useStore($CurrentStands)
   const standForRelease = useStore($openStand)
   const [ReleaseStandByID, { loading }] = useMutation(RELEASE_STAND_BY_ID)
   const isLoading = isStandsLoading || loading
@@ -53,11 +53,11 @@ export const UserPage: FC<Page> = ({ userId }) => {
     <ModalSubmit isVisible={isModalOpen} onSubmit={handleSubmit} onCancel={handleCancel} standId={standForRelease}/>
     {isLoading && !findBusyUserStands && <Spin size="large" />}
     {!isLoading && !findBusyUserStands &&
-      (<Result
-        status="info"
-        icon={<CoffeeOutlined />}
-        title="Занятых стендов пока нет"
-      />)}
+      (<Empty
+        image={Empty.PRESENTED_IMAGE_SIMPLE}
+        description="Занятых стендов пока нет"
+      />)
+    }
     <StandsList stands={userStands} isLoading={isLoading} isUserStand onClick={handleClick}/>
   </>
 }

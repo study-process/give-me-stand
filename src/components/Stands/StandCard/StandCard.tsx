@@ -10,6 +10,11 @@ const { Meta } = Card;
 const itemStyle = { fontSize: "0.75rem" }
 const labelStyle = { fontSize: "0.75rem", fontWeight: "bold" }
 
+const avatarStyle: React.CSSProperties = {
+  padding: '0.25rem',
+  backgroundColor: '#FFFFFF',
+}
+
 export const StandCard: FC<StandCardProps> = ({
   loading,
   id,
@@ -19,7 +24,7 @@ export const StandCard: FC<StandCardProps> = ({
   branch,
   comments,
   onClick,
-  isUserStand,
+  isUserStand, isCurrentUserStandsLimitEnabled,
 }) => {
   const parseDate = busyUntil ? Date.parse(busyUntil) : ''
   const isBusyDateActual = parseDate > Date.now()
@@ -49,14 +54,17 @@ export const StandCard: FC<StandCardProps> = ({
         <Tooltip title={comments}>
           <CommentOutlined style={{ fontSize: '180%'}} hidden={!comments || !isStandBusy}/>
         </Tooltip>,
-        <Button type="primary" disabled={isButtonDisabled} onClick={handleClick}>
+        <Button type="primary" disabled={isButtonDisabled || isCurrentUserStandsLimitEnabled} onClick={handleClick}>
           {isUserStand ? 'Освободить' : 'Занять'}
         </Button>,
       ]}
     >
       <Skeleton loading={loading} avatar active>
         <Meta
-          avatar={<Avatar src="https://img.icons8.com/material/48/000000/server--v1.png" />}
+          avatar={<Avatar
+            src="https://img.icons8.com/material/48/000000/server--v1.png"
+            style={avatarStyle}
+          />}
           description={<>
             <Descriptions
               contentStyle={itemStyle}

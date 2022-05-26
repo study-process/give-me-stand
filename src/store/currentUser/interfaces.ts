@@ -5,7 +5,7 @@ export interface currentUser {
   accessToken?: string | null;
   adminSecret?: string | null;
   team?: string | null;
-  maxStandsCount?: string | null;
-  isMaxUsersStandsCountEnabled?: string | null;
+  maxStandsCount?: number | null;
+  isMaxUsersStandsCountEnabled?: boolean | null;
   isTransferPasswordChanged?: string | null;
 }

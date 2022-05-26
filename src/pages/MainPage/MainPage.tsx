@@ -8,19 +8,20 @@ import { $currentUser } from "../../store";
 export const MainPage: FC = () => {
   const [isUserPageVisible, setIsUserPageVisible] = useState(true)
   const handleChange = () => setIsUserPageVisible(!isUserPageVisible)
-  const currenUser = useStore($currentUser)
+  const {userId, isTransferPasswordChanged } = useStore($currentUser)
 
-  //TODO: delete
-  console.log(currenUser, 'currenUser')
-
-  if (!currenUser.userId) {
+  if (!userId) {
     return <ErrorPage />
+  }
+
+  if (!isTransferPasswordChanged) {
+    return <div>Необходимо сменить транспортный пароль</div>
   }
 
   return (
     <>
       <Header onChange={handleChange} />
-      {isUserPageVisible && <UserPage userId={currenUser.userId}/>}
+      {isUserPageVisible && <UserPage userId={userId}/>}
       {!isUserPageVisible && <StandsPage />}
     </>
   )

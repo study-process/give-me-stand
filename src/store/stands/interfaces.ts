@@ -6,3 +6,10 @@ export interface OpenStand {
   busyUntil: string
   comments: string
 }
+
+export interface maxUsersStandsCount {
+  isMaxUsersStandsCountAchieved?: boolean
+  isMaxUsersStandsCountEnabled?: boolean | null
+  maxUsersStandsCount?: number | null
+  isUserCanReleaseStand?: boolean | null
+}
