@@ -23,7 +23,7 @@ export const Header: FC<HeaderProps> = ({ onChange }) => {
         <Radio.Button value="2">Все стенды</Radio.Button>
       </Radio.Group>
     </div>
-    <UserAvatar style={userAvatarStyle}/>
     <ExitButton style={headerLogoutButtonStyle} onClick={handleLogoutSubmit}/>
+    <UserAvatar style={userAvatarStyle}/>
   </>
 }

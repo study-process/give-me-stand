@@ -7,14 +7,12 @@ import {
   $standsIsLoading, deleteUserStandFromStoreEvent,
   getUserStandEvent
 } from "src/store/stands";
-import { Spin, Result, Empty } from "antd";
-import { CoffeeOutlined } from '@ant-design/icons';
+import { Spin, Empty } from "antd";
 import { Page } from '../interfaces'
 import { FC, useState } from "react";
 import { ModalSubmit } from "src/components/widgets/ModalSubmit/ModalSubmit";
 import { useMutation } from "@apollo/client";
 import { GET_STAND_BY_ID, RELEASE_STAND_BY_ID } from "src/gql";
-
 
 export const UserPage: FC<Page> = ({ userId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
