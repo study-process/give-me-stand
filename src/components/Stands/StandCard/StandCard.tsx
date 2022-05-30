@@ -77,7 +77,7 @@ export const StandCard: FC<StandCardProps> = ({
             }>
               <Descriptions.Item
                 label="Статус"
-                style={isStandBusy ? statusBusyStyle : statusFreeStyle}
+                contentStyle={isStandBusy ? statusBusyStyle : statusFreeStyle}
               >
                 {status}
               </Descriptions.Item>

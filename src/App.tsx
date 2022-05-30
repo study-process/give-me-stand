@@ -17,10 +17,6 @@ const App = () => {
               element={<MainPage />}
             />
             <Route
-              path={NavigationPageTypesEnum.MainPage}
-              element={<MainPage />}
-            />
-            <Route
               path={NavigationPageTypesEnum.LoginPage}
               element={<LoginPage />}
             />

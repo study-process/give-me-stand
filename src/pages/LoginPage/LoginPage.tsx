@@ -44,7 +44,7 @@ export const LoginPage = () => {
           accessToken: response.data.accessToken,
           adminSecret: response.data.adminSecret,
         })
-        navigate(NavigationPageTypesEnum.MainPage)
+        navigate(NavigationPageTypesEnum.HomePage)
       }
       if (response.data === serverResponse.NOT_AUTHORIZED) {
         setServerResponseErrorEvent(response.data)

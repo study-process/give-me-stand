@@ -1,6 +1,5 @@
 export enum NavigationPageTypesEnum {
   HomePage = '/',
-  MainPage = '/main',
   LoginPage = '/login'
 }
 
