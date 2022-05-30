@@ -5,6 +5,7 @@ import { LoginPage } from 'src/pages/LoginPage'
 import { MainPage } from 'src/pages/index'
 import { NavigationPageTypesEnum } from './constants'
 import { InitialContainer } from "./components/InitialContainer";
+import { ErrorPage } from "./pages/ErrorPage";
 
 const App = () => {
   return (
@@ -22,6 +23,10 @@ const App = () => {
             <Route
               path={NavigationPageTypesEnum.LoginPage}
               element={<LoginPage />}
+            />
+            <Route
+              path="*"
+              element={<ErrorPage isNotFound />}
             />
           </Routes>
         </div>
