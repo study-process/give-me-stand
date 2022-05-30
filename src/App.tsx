@@ -13,11 +13,15 @@ const App = () => {
           <Routes>
             <Route
               path={NavigationPageTypesEnum.HomePage}
-              element={<LoginPage />}
+              element={<MainPage />}
             />
             <Route
               path={NavigationPageTypesEnum.MainPage}
               element={<MainPage />}
+            />
+            <Route
+              path={NavigationPageTypesEnum.LoginPage}
+              element={<LoginPage />}
             />
           </Routes>
         </div>

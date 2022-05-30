@@ -4,7 +4,7 @@ import { Form, Input, Button, Alert, Space, Typography, Spin } from 'antd'
 import { LoginCheck } from 'src/interfaces'
 import {
   $displayErrorWarning,
-  setErrorWarningEvent, setCurrentUserEvent
+  setErrorWarningEvent, setCurrentUserEvent, currentUser
 } from "src/store";
 import { adminLoginMessageTypesEnum } from './constants'
 import { NavigationPageTypesEnum } from '../../constants'

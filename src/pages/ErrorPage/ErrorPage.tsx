@@ -9,7 +9,7 @@ export const ErrorPage = () => {
   const navigate = useNavigate()
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
-    navigate(NavigationPageTypesEnum.HomePage)
+    navigate(NavigationPageTypesEnum.LoginPage)
   }
 
   return (
@@ -19,7 +19,7 @@ export const ErrorPage = () => {
       subTitle={ErrorPageSubTitleTypesEnum.notAuthorized}
       extra={
         <Button type="primary" onClick={handleClick}>
-          На главную
+          Перейти ко входу
         </Button>
       }
     />

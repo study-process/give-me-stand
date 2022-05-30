@@ -7,13 +7,15 @@ import { resetCurrentUserEvent } from "../../store";
 import { useNavigate } from "react-router-dom";
 import { NavigationPageTypesEnum } from "../../constants";
 import { UserAvatar } from "../UserAvatar";
+import { LOCAL_STORAGE_USER } from '../../constants'
 
 export const Header: FC<HeaderProps> = ({ onChange }) => {
   const navigate = useNavigate()
 
   const handleLogoutSubmit = useCallback(() => {
     resetCurrentUserEvent()
-    navigate(NavigationPageTypesEnum.HomePage)
+    window.localStorage.removeItem(LOCAL_STORAGE_USER);
+    navigate(NavigationPageTypesEnum.LoginPage)
   }, [])
 
   return <>
