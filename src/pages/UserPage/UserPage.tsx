@@ -2,7 +2,7 @@ import React, { useCallback, useMemo} from "react";
 import { useStore } from 'effector-react';
 import { StandsList } from "../../components/Stands";
 import {
-  $CurrentStands,
+  $CurrentStands, $filteredUserStands,
   $openStand,
   $standsIsLoading, deleteUserStandFromStoreEvent,
   getUserStandEvent
@@ -24,6 +24,9 @@ export const UserPage: FC<Page> = ({ userId }) => {
   const isLoading = isStandsLoading || loading
   const findBusyUserStands = useMemo(() => userStands.find(stand => stand?.isBusy === true), [userStands])
   getUserStandEvent(userId)
+  const filteredUserStands = useStore($filteredUserStands)
+
+  console.log(filteredUserStands)
 
   const handleClick = () => {
     setIsModalOpen(true)
@@ -50,7 +53,7 @@ export const UserPage: FC<Page> = ({ userId }) => {
   return <>
     <ModalSubmit isVisible={isModalOpen} onSubmit={handleSubmit} onCancel={handleCancel} standId={standForRelease}/>
     {isLoading && !findBusyUserStands && <Spin size="large" />}
-    {!isLoading && !findBusyUserStands &&
+    {!isLoading && filteredUserStands.length < 1 &&
       (<Empty
         image={Empty.PRESENTED_IMAGE_SIMPLE}
         description="Занятых стендов пока нет"

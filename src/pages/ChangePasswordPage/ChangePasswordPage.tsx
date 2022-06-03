@@ -16,7 +16,7 @@ export const ChangePasswordPage: FC = () => {
 
   const handleClickToLogin = () => {
     resetCurrentUserEvent()
-    navigate(NavigationPageTypesEnum.HomePage)
+    navigate(NavigationPageTypesEnum.LoginPage)
   }
 
   const handleFinish = (values: {
