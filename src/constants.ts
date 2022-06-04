@@ -1,6 +1,7 @@
 export enum NavigationPageTypesEnum {
   HomePage = '/',
-  LoginPage = '/login'
+  LoginPage = '/login',
+  AdminPage = '/admin'
 }
 
 export const AUTHORIZED_URL = 'http://localhost:8080/login'

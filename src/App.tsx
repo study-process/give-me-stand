@@ -2,7 +2,7 @@ import React from 'react'
 import './App.css'
 import { Routes, Route } from 'react-router-dom'
 import { LoginPage } from 'src/pages/LoginPage'
-import { MainPage } from 'src/pages/index'
+import { MainPage, AdminPage } from 'src/pages/index'
 import { NavigationPageTypesEnum } from './constants'
 import { InitialContainer } from "./components/InitialContainer";
 import { ErrorPage } from "./pages/ErrorPage";
@@ -19,6 +19,10 @@ const App = () => {
             <Route
               path={NavigationPageTypesEnum.LoginPage}
               element={<LoginPage />}
+            />
+            <Route
+              path={NavigationPageTypesEnum.AdminPage}
+              element={<AdminPage />}
             />
             <Route
               path="*"

@@ -23,6 +23,16 @@ export const headerLogoutButtonStyle: CSS.Properties= {
     zIndex: '10',
 }
 
+export const headerAdminLogoutButtonStyle: CSS.Properties= {
+    position: 'fixed',
+    top: '1rem',
+    right: '5%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: '10',
+}
+
 export const userAvatarStyle: CSS.Properties= {
     position: 'fixed',
     top: '0.5rem',

@@ -6,15 +6,15 @@ import { Header } from 'src/components/Header'
 import { ErrorPage } from "../ErrorPage";
 import { $currentUser, currentUser, setCurrentUserEvent } from "../../store";
 import { ChangePasswordPage } from "../ChangePasswordPage";
-import { LOCAL_STORAGE_USER } from '../../constants'
+import { LOCAL_STORAGE_USER, NavigationPageTypesEnum } from "../../constants";
+import { useNavigate } from "react-router-dom";
 
 export const MainPage: FC = () => {
   const [isUserPageVisible, setIsUserPageVisible] = useState(true)
   const [localStorageUser, setLocalStorageUser] = useLocalStorage<currentUser | null>(LOCAL_STORAGE_USER, null)
   const handleChange = () => setIsUserPageVisible(!isUserPageVisible)
   const user = useStore($currentUser)
-
-  console.log(user)
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (user.userId) {
@@ -46,6 +46,10 @@ export const MainPage: FC = () => {
 
   if (!user.isTransferPasswordChanged && !localStorageUser?.isTransferPasswordChanged) {
     return <ChangePasswordPage />
+  }
+
+  if (!!user.isAdmin || !!localStorageUser?.isAdmin) {
+    navigate(NavigationPageTypesEnum.AdminPage)
   }
 
   return (

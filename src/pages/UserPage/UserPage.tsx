@@ -26,8 +26,6 @@ export const UserPage: FC<Page> = ({ userId }) => {
   getUserStandEvent(userId)
   const filteredUserStands = useStore($filteredUserStands)
 
-  console.log(filteredUserStands)
-
   const handleClick = () => {
     setIsModalOpen(true)
   }
