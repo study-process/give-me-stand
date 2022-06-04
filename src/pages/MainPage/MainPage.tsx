@@ -14,6 +14,8 @@ export const MainPage: FC = () => {
   const handleChange = () => setIsUserPageVisible(!isUserPageVisible)
   const user = useStore($currentUser)
 
+  console.log(user)
+
   useEffect(() => {
     if (user.userId) {
       setLocalStorageUser(user)
@@ -33,6 +35,7 @@ export const MainPage: FC = () => {
         accessToken: localStorageUser.accessToken,
         adminSecret: localStorageUser.adminSecret,
         matterMostLink: localStorageUser.matterMostLink,
+        isAdmin: localStorageUser.isAdmin,
       })
     }
   }, [user]);

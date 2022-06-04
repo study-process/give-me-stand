@@ -4,7 +4,7 @@ import { UserOutlined } from '@ant-design/icons';
 import { UserAvatarProps } from "./interfaces";
 import { useStore } from "effector-react";
 import { $currentUser } from "../../store";
-import { $maxUsersStandsCount, $stands, $standsIsLoading } from "../../store/stands";
+import { $maxUsersStandsCount, $standsIsLoading } from "../../store/stands";
 const { Text } = Typography;
 
 export const UserAvatar: FC<UserAvatarProps> = ({style}) => {

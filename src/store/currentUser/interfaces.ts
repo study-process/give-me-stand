@@ -9,4 +9,5 @@ export interface currentUser {
   isMaxUsersStandsCountEnabled?: boolean | null;
   isTransferPasswordChanged?: string | null;
   matterMostLink?: string | null;
+  isAdmin?: boolean | null;
 }

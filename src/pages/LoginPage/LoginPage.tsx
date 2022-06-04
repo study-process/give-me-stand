@@ -44,6 +44,7 @@ export const LoginPage = () => {
           accessToken: response.data.accessToken,
           adminSecret: response.data.adminSecret,
           matterMostLink: response.data.matterMostLink,
+          isAdmin: response.data.isAdmin,
         })
         navigate(NavigationPageTypesEnum.HomePage)
       }
