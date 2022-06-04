@@ -10,4 +10,5 @@ export interface StandCardProps {
   team?: string;
   onClick: () => void;
   isCurrentUserStandsLimitEnabled?: boolean,
+  matterMostLink?: string,
 }

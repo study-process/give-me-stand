@@ -8,8 +8,9 @@ export const TAKE_STAND_BY_ID = gql`
           $whoIsBusy: String
           $busyUntil: String
           $comments: String
+          $matterMostLink: String
       ) {
-          update_stands(where: {id: {_eq: $id}}, _set: {branch: $branch, busyUntil: $busyUntil, comments: $comments, isBusy: true, userId: $userId, whoIsBusy: $whoIsBusy}) {
+          update_stands(where: {id: {_eq: $id}}, _set: {branch: $branch, busyUntil: $busyUntil, comments: $comments, isBusy: true, userId: $userId, whoIsBusy: $whoIsBusy, matterMostLink: $matterMostLink}) {
               affected_rows
               returning {
                   id

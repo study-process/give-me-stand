@@ -43,6 +43,7 @@ export const LoginPage = () => {
           isTransferPasswordChanged: response.data.isTransferPasswordChanged,
           accessToken: response.data.accessToken,
           adminSecret: response.data.adminSecret,
+          matterMostLink: response.data.matterMostLink,
         })
         navigate(NavigationPageTypesEnum.HomePage)
       }

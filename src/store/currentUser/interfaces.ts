@@ -8,4 +8,5 @@ export interface currentUser {
   maxStandsCount?: number | null;
   isMaxUsersStandsCountEnabled?: boolean | null;
   isTransferPasswordChanged?: string | null;
+  matterMostLink?: string | null;
 }

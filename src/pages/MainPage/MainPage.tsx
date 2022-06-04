@@ -32,11 +32,10 @@ export const MainPage: FC = () => {
         isTransferPasswordChanged: localStorageUser.isTransferPasswordChanged,
         accessToken: localStorageUser.accessToken,
         adminSecret: localStorageUser.adminSecret,
+        matterMostLink: localStorageUser.matterMostLink,
       })
     }
   }, [user]);
-
-  console.log(localStorageUser)
 
   if (!user.userId && !localStorageUser?.userId) {
     return <ErrorPage />

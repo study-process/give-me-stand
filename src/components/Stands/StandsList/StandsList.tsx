@@ -14,7 +14,6 @@ export const StandsList: FC<StandsListProps> = ({stands, isLoading, isUserStand,
   const filteredUserStands = useStore($filteredUserStands)
   const { isUserCanReleaseStand } = useStore($maxUsersStandsCount) ?? {}
 
-
   const standsForSort = [...stands]
   const sortedAndFilterdByteamStands = stands ?
     standsForSort
@@ -37,6 +36,7 @@ export const StandsList: FC<StandsListProps> = ({stands, isLoading, isUserStand,
           key={stand.id}
           isUserStand={isUserStand}
           onClick={onClick}
+          matterMostLink={stand.matterMostLink}
         />)
       }
     </div>
@@ -55,6 +55,7 @@ export const StandsList: FC<StandsListProps> = ({stands, isLoading, isUserStand,
         isUserStand={isUserStand}
         onClick={onClick}
         isCurrentUserStandsLimitEnabled={!isUserCanReleaseStand}
+        matterMostLink={stand.matterMostLink}
       />)
     }
   </div>

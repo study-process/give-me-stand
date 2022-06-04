@@ -5,6 +5,7 @@ import { CommentOutlined } from '@ant-design/icons';
 import { statusTypeEnum } from "./constants";
 import {statusBusyStyle, statusFreeStyle} from './styles'
 import { setOpenStandEvent } from "src/store/stands";
+import { MatterMostLink } from "./components";
 
 const { Meta } = Card;
 const itemStyle = { fontSize: "0.75rem" }
@@ -24,7 +25,9 @@ export const StandCard: FC<StandCardProps> = ({
   branch,
   comments,
   onClick,
-  isUserStand, isCurrentUserStandsLimitEnabled,
+  isUserStand,
+  isCurrentUserStandsLimitEnabled,
+  matterMostLink
 }) => {
   const parseDate = busyUntil ? Date.parse(busyUntil) : ''
   const isBusyDateActual = parseDate > Date.now()
@@ -35,7 +38,7 @@ export const StandCard: FC<StandCardProps> = ({
     hour: '2-digit',
     minute: '2-digit',
   }) : '', [busyUntil])
-
+ console.log(matterMostLink)
   const standLink = `https://dev${id}-beta.pcbltools.ru/`
   const isButtonDisabled = loading || isBusy && !isUserStand && isBusyDateActual
   const status = isBusy && isBusyDateActual ? statusTypeEnum.busy : statusTypeEnum.free
@@ -88,7 +91,9 @@ export const StandCard: FC<StandCardProps> = ({
                       {branchName}
                     </Tooltip>
                   </Descriptions.Item>
-                  <Descriptions.Item label="Занят" >{whoIsBusy}</Descriptions.Item>
+                  <Descriptions.Item label="Занят" >
+                    {matterMostLink ? <MatterMostLink userMMName={matterMostLink} userName={whoIsBusy}/> : `${whoIsBusy}`}
+                  </Descriptions.Item>
                   <Descriptions.Item label="Занят до" >{dateToDisplay}</Descriptions.Item>
                 </>
               )}

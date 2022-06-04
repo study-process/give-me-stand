@@ -66,6 +66,7 @@ export const Modal: FC<{
         whoIsBusy: whoIsBusy,
         busyUntil: String(formValues.busyUntil),
         comments: formValues?.comments,
+        matterMostLink: currenUser.matterMostLink,
       },
       refetchQueries: [
         {query: GET_ALL_STANDS
