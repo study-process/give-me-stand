@@ -7,7 +7,7 @@ export * from '../../gql/mutations'
 import { ApolloProvider } from '@apollo/client'
 
 export const ApolloProviderWithClient: FC = ({ children }) => {
-  const URI = 'https://give-me-stand.hasura.app/v1/graphql'
+  const URI = 'https://give-me-stand-new.hasura.app/v1/graphql'
   const { adminSecret } = useStore($currentUser)
 
   const client = new ApolloClient({

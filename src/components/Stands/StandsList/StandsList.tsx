@@ -1,11 +1,12 @@
-import { FC } from 'react'
+import React, { FC } from 'react'
 import { StandCard } from "../StandCard";
 import { standListStyleThreeColumns, standListStyleFourColumns } from "./styles";
 import { StandsListProps } from "./interfaces";
 import { StandCardProps } from "../StandCard/interfaces";
 import { useStore } from "effector-react";
 import { $currentUser } from "../../../store";
-import { $filteredUserStands, $maxUsersStandsCount } from "../../../store/stands";
+import { $filteredUserStands, $maxUsersStandsCount, $standsIsLoading } from "../../../store/stands";
+import { Empty } from "antd";
 
 const getStandNumber = (id: string) => Number(id.split('-')[1])
 
@@ -13,6 +14,7 @@ export const StandsList: FC<StandsListProps> = ({stands, isLoading, isUserStand,
   const {team: userTeam} = useStore($currentUser) ?? {}
   const filteredUserStands = useStore($filteredUserStands)
   const { isUserCanReleaseStand } = useStore($maxUsersStandsCount) ?? {}
+  const isStandsLoading = useStore($standsIsLoading)
 
   const standsForSort = [...stands]
   const sortedAndFilterdByteamStands = stands ?
@@ -22,6 +24,7 @@ export const StandsList: FC<StandsListProps> = ({stands, isLoading, isUserStand,
       .filter(stand => stand.team?.toLowerCase() === userTeam?.toLowerCase()): []
   const standListStyle = sortedAndFilterdByteamStands.length < 10 ? standListStyleThreeColumns : standListStyleFourColumns
   const UserStandListStyle = filteredUserStands.length < 10 ? standListStyleThreeColumns : standListStyleFourColumns
+
   if (isUserStand) {
     return <div style={UserStandListStyle}>
       {filteredUserStands?.map(stand =>
@@ -41,6 +44,14 @@ export const StandsList: FC<StandsListProps> = ({stands, isLoading, isUserStand,
       }
     </div>
   }
+
+  if (sortedAndFilterdByteamStands.length === 0 && !isStandsLoading) {
+    return (<Empty
+      image={Empty.PRESENTED_IMAGE_SIMPLE}
+      description={`Стендов для команды ${userTeam} не найдено`}
+    />)
+  }
+
   return <div style={standListStyle} >
     {sortedAndFilterdByteamStands?.map(stand =>
       <StandCard
