@@ -91,9 +91,11 @@ export const StandCard: FC<StandCardProps> = ({
                       {branchName}
                     </Tooltip>
                   </Descriptions.Item>
-                  <Descriptions.Item label="Занят" >
-                    {matterMostLink ? <MatterMostLink userMMName={matterMostLink} userName={whoIsBusy}/> : `${whoIsBusy}`}
-                  </Descriptions.Item>
+                  {!isUserStand &&
+                    <Descriptions.Item label="Занят" >
+                      {matterMostLink ? <MatterMostLink userMMName={matterMostLink} userName={whoIsBusy}/> : `${whoIsBusy}`}
+                    </Descriptions.Item>
+                  }
                   <Descriptions.Item label="Занят до" >{dateToDisplay}</Descriptions.Item>
                 </>
               )}
