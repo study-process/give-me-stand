@@ -1,5 +1,6 @@
 {
   "name": "js-school-list",
+  "homepage": "https://dpolevodin.github.io/GiveMeStand",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -20,6 +21,7 @@
     "csstype": "^3.0.11",
     "effector": "^22.2.0",
     "effector-react": "^22.0.6",
+    "gh-pages": "^4.0.0",
     "moment": "^2.29.2",
     "react": "^17.0.2",
     "react-css-theme-switcher": "^0.3.0",
@@ -36,7 +38,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "engines": {
     "node": "16.x"
