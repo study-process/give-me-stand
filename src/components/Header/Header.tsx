@@ -5,7 +5,7 @@ import { HeaderProps } from './interfaces'
 import { ExitButton } from "../ExitButton";
 import { resetCurrentUserEvent } from "../../store";
 import { useNavigate } from "react-router-dom";
-import { NavigationPageTypesEnum } from "../../constants";
+import { NavigationPageTypesEnum, ROOT_URL } from "../../constants";
 import { UserAvatar } from "../UserAvatar";
 import { LOCAL_STORAGE_USER } from '../../constants'
 
@@ -15,7 +15,7 @@ export const Header: FC<HeaderProps> = ({ onChange }) => {
   const handleLogoutSubmit = useCallback(() => {
     resetCurrentUserEvent()
     window.localStorage.removeItem(LOCAL_STORAGE_USER);
-    navigate(NavigationPageTypesEnum.LoginPage)
+    navigate(ROOT_URL + NavigationPageTypesEnum.LoginPage)
   }, [])
 
   return <>

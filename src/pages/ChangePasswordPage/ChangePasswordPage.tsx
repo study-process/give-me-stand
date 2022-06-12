@@ -6,7 +6,7 @@ import { useStore } from "effector-react";
 import { $currentUser, resetCurrentUserEvent } from "../../store";
 import sha256 from 'crypto-js/sha256';
 import { useNavigate } from "react-router-dom";
-import { NavigationPageTypesEnum } from "../../constants";
+import { NavigationPageTypesEnum, ROOT_URL } from "../../constants";
 
 export const ChangePasswordPage: FC = () => {
   const { userId } = useStore($currentUser)
@@ -16,7 +16,7 @@ export const ChangePasswordPage: FC = () => {
 
   const handleClickToLogin = () => {
     resetCurrentUserEvent()
-    navigate(NavigationPageTypesEnum.LoginPage)
+    navigate(ROOT_URL + NavigationPageTypesEnum.LoginPage)
   }
 
   const handleFinish = (values: {

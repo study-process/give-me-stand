@@ -2,7 +2,7 @@ import React, {FC} from 'react'
 import { Result, Button } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { ErrorPageSubTitleTypesEnum } from './constants'
-import { NavigationPageTypesEnum } from 'src/constants'
+import { NavigationPageTypesEnum, ROOT_URL } from "src/constants";
 import { ErrorPageStatusTypesEnum } from './constants'
 import { ErrorPageProps } from "./interfaces";
 
@@ -12,7 +12,7 @@ export const ErrorPage: FC<ErrorPageProps>= ({isNotFound}) => {
   const subTitle = isNotFound ? ErrorPageSubTitleTypesEnum.notFound : ErrorPageSubTitleTypesEnum.notAuthorized
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
-    isNotFound ? navigate(NavigationPageTypesEnum.HomePage) : navigate(NavigationPageTypesEnum.LoginPage)
+    isNotFound ? navigate(ROOT_URL + NavigationPageTypesEnum.HomePage) : navigate(ROOT_URL + NavigationPageTypesEnum.LoginPage)
   }
 
   return (

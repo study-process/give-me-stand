@@ -7,7 +7,7 @@ import {
   setErrorWarningEvent, setCurrentUserEvent,
 } from "src/store";
 import { adminLoginMessageTypesEnum } from './constants'
-import { NavigationPageTypesEnum } from '../../constants'
+import { NavigationPageTypesEnum, ROOT_URL } from "../../constants";
 import axios from "axios";
 import {
   $serverResponseIsLoading,
@@ -46,7 +46,7 @@ export const LoginPage = () => {
           matterMostLink: response.data.matterMostLink,
           isAdmin: response.data.isAdmin,
         })
-        navigate(NavigationPageTypesEnum.HomePage)
+        navigate(ROOT_URL + NavigationPageTypesEnum.HomePage)
       }
       if (response.data === serverResponse.NOT_AUTHORIZED) {
         setServerResponseErrorEvent(response.data)

@@ -6,7 +6,7 @@ import { Header } from 'src/components/Header'
 import { ErrorPage } from "../ErrorPage";
 import { $currentUser, currentUser, setCurrentUserEvent } from "../../store";
 import { ChangePasswordPage } from "../ChangePasswordPage";
-import { LOCAL_STORAGE_USER, NavigationPageTypesEnum } from "../../constants";
+import { LOCAL_STORAGE_USER, NavigationPageTypesEnum, ROOT_URL } from "../../constants";
 import { useNavigate } from "react-router-dom";
 
 export const MainPage: FC = () => {
@@ -49,7 +49,7 @@ export const MainPage: FC = () => {
   }
 
   if (!!user.isAdmin || !!localStorageUser?.isAdmin) {
-    navigate(NavigationPageTypesEnum.AdminPage)
+    navigate(ROOT_URL + NavigationPageTypesEnum.AdminPage)
   }
 
   return (

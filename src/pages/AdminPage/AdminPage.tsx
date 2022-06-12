@@ -10,7 +10,7 @@ import {
 import { headerAdminLogoutButtonStyle } from "../../components/Header/styles";
 import { ExitButton } from "../../components/ExitButton";
 import { resetCurrentUserEvent } from "../../store";
-import { LOCAL_STORAGE_USER, NavigationPageTypesEnum } from "../../constants";
+import { LOCAL_STORAGE_USER, NavigationPageTypesEnum, ROOT_URL } from "../../constants";
 import { useNavigate } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
@@ -38,7 +38,7 @@ export const AdminPage: FC = () => {
   const handleLogoutSubmit = useCallback(() => {
     resetCurrentUserEvent()
     window.localStorage.removeItem(LOCAL_STORAGE_USER);
-    navigate(NavigationPageTypesEnum.LoginPage)
+    navigate(ROOT_URL + NavigationPageTypesEnum.LoginPage)
   }, [])
 
   return <Layout style={{
