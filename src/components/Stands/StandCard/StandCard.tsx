@@ -38,7 +38,7 @@ export const StandCard: FC<StandCardProps> = ({
     hour: '2-digit',
     minute: '2-digit',
   }) : '', [busyUntil])
- console.log(matterMostLink)
+
   const standLink = `https://dev${id}-beta.pcbltools.ru/`
   const isButtonDisabled = loading || isBusy && !isUserStand && isBusyDateActual
   const status = isBusy && isBusyDateActual ? statusTypeEnum.busy : statusTypeEnum.free
