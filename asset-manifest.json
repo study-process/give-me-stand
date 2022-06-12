@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/GiveMeStand/static/css/main.bf9bd34a.css",
+    "main.js": "/GiveMeStand/static/js/main.0b823289.js",
+    "index.html": "/GiveMeStand/index.html",
+    "main.bf9bd34a.css.map": "/GiveMeStand/static/css/main.bf9bd34a.css.map",
+    "main.0b823289.js.map": "/GiveMeStand/static/js/main.0b823289.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bf9bd34a.css",
+    "static/js/main.0b823289.js"
+  ]
+}
