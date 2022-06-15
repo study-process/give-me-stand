@@ -12,7 +12,8 @@ const itemStyle = { fontSize: "0.75rem" }
 const labelStyle = { fontSize: "0.75rem", fontWeight: "bold" }
 
 const avatarStyle: React.CSSProperties = {
-  padding: '0.25rem',
+  position: 'absolute',
+  top: '1.5rem',
   backgroundColor: '#FFFFFF',
 }
 
@@ -39,11 +40,12 @@ export const StandCard: FC<StandCardProps> = ({
     minute: '2-digit',
   }) : '', [busyUntil])
 
-  const standLink = `https://dev${id}-beta.pcbltools.ru/`
+  const standLink = `https://dev${id}.pcbltools.ru/`
   const isButtonDisabled = loading || isBusy && !isUserStand && isBusyDateActual
   const status = isBusy && isBusyDateActual ? statusTypeEnum.busy : statusTypeEnum.free
   const isStandBusy = status === statusTypeEnum.busy
   const branchName = useMemo(() => branch && branch?.length > 16 ? `${branch?.slice(0, 16)}...` : branch, [branch])
+  const formattedComments = String(comments).trim()
 
   const handleClick = () => {
     onClick()
@@ -54,8 +56,8 @@ export const StandCard: FC<StandCardProps> = ({
     <Card
       style={{ width: 300, marginTop: 16, display: 'flex', justifyContent: 'space-between', flexDirection: 'column' }}
       actions={[
-        <Tooltip title={comments}>
-          <CommentOutlined style={{ fontSize: '180%'}} hidden={!comments || !isStandBusy}/>
+        <Tooltip title={formattedComments}>
+          <CommentOutlined style={{ fontSize: '180%'}} hidden={!formattedComments || !isStandBusy}/>
         </Tooltip>,
         <Button type="primary" disabled={isButtonDisabled || isCurrentUserStandsLimitEnabled} onClick={handleClick}>
           {isUserStand ? 'Освободить' : 'Занять'}
@@ -73,8 +75,11 @@ export const StandCard: FC<StandCardProps> = ({
               contentStyle={itemStyle}
               labelStyle={labelStyle}
               column={1} size="small"
+              style={{ padding: "0.5rem 0 0 2rem" }}
               title={
-              <Button type="link" size='small' href={standLink} target="_blank" name="standId">
+              <Button type="link" size='small' href={standLink} target="_blank" name="standId" style={{
+                padding: '0 0 0.5rem 0.5rem'
+              }}>
                 {id}
               </Button>
             }>
@@ -92,7 +97,7 @@ export const StandCard: FC<StandCardProps> = ({
                     </Tooltip>
                   </Descriptions.Item>
                   {!isUserStand &&
-                    <Descriptions.Item label="Занят" >
+                    <Descriptions.Item label="Пользователь" >
                       {matterMostLink ? <MatterMostLink userMMName={matterMostLink} userName={whoIsBusy}/> : `${whoIsBusy}`}
                     </Descriptions.Item>
                   }

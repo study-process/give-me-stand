@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { DatePicker, Form, Input, Modal as ModalAntd, Typography } from "antd";
 import moment from 'moment'
 import {
@@ -46,43 +46,50 @@ export const Modal: FC<{
   const userId = currenUser.userId ?? 0
 
   const handleOk = () => {
-    form.submit()
     const formValues = form.getFieldsValue()
+    console.log(Object.entries(formValues))
+    if (!Object.entries(formValues).some(
+      value => value.includes(undefined) && !value.includes('comments')
+    )) {
+      form.submit()
 
-    setOpenStandToTakeEvent({
-      id: standId,
-      userId: userId,
-      branch: formValues.branch,
-      whoIsBusy: whoIsBusy,
-      busyUntil: String(formValues.busyUntil),
-      comments: formValues.comments,
-    })
-
-    TakeStandByID({
-      variables: {
+      setOpenStandToTakeEvent({
         id: standId,
         userId: userId,
-        branch: formValues?.branch,
+        branch: formValues.branch,
         whoIsBusy: whoIsBusy,
         busyUntil: String(formValues.busyUntil),
-        comments: formValues?.comments,
-        matterMostLink: currenUser.matterMostLink,
-      },
-      refetchQueries: [
-        {query: GET_ALL_STANDS
+        comments: formValues.comments,
+      })
+
+      TakeStandByID({
+        variables: {
+          id: standId,
+          userId: userId,
+          branch: formValues?.branch,
+          whoIsBusy: whoIsBusy,
+          busyUntil: String(formValues.busyUntil),
+          comments: formValues?.comments,
+          matterMostLink: currenUser.matterMostLink,
         },
-        {query: GET_STAND_BY_ID,
-          variables: { userId: userId}
-        }
-      ],
-      awaitRefetchQueries: true,
-    })
+        refetchQueries: [
+          {query: GET_ALL_STANDS
+          },
+          {query: GET_STAND_BY_ID,
+            variables: { userId: userId}
+          }
+        ],
+        awaitRefetchQueries: true,
+      })
 
-    setIsStandsLoadingEvent(false)
+      setIsStandsLoadingEvent(false)
 
-    onSubmit()
-    form.resetFields()
-    return onSubmit()
+      onSubmit()
+      form.resetFields()
+      return onSubmit()
+    } else {
+      alert('Необходимо заполнить обязательные поля!')
+    }
   };
 
   const handleCancel = () => {

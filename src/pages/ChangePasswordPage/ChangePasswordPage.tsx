@@ -1,22 +1,22 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import { Form, Input, Button, Spin, Alert } from 'antd';
 import { useMutation } from "@apollo/client";
 import { CHANGE_USER_PASSWORD } from "../../gql";
 import { useStore } from "effector-react";
-import { $currentUser, resetCurrentUserEvent } from "../../store";
+import { $currentUser, currentUser } from "../../store";
 import sha256 from 'crypto-js/sha256';
-import { useNavigate } from "react-router-dom";
-import { NavigationPageTypesEnum, ROOT_URL } from "../../constants";
+import { LOCAL_STORAGE_USER } from "../../constants";
+import useLocalStorage from "use-local-storage";
 
 export const ChangePasswordPage: FC = () => {
   const { userId } = useStore($currentUser)
+  const user = useStore($currentUser)
   const [isPasswordNotMatched, setIsPasswordNotMatched] = useState(false)
-  const navigate = useNavigate()
+  const [localStorageUser, setLocalStorageUser] = useLocalStorage<currentUser | null>(LOCAL_STORAGE_USER, user)
   const [ChangeUserPassword, {loading, data}] = useMutation(CHANGE_USER_PASSWORD)
 
-  const handleClickToLogin = () => {
-    resetCurrentUserEvent()
-    navigate(ROOT_URL + NavigationPageTypesEnum.LoginPage)
+  const handleClickForward = () => {
+    window.location.reload()
   }
 
   const handleFinish = (values: {
@@ -35,6 +35,9 @@ export const ChangePasswordPage: FC = () => {
             id: userId,
             password: hashPassword,
           },
+          onCompleted: () => {
+            setLocalStorageUser({...user, isTransferPasswordChanged: "true"})
+          }
         })
       }
     }
@@ -92,8 +95,8 @@ export const ChangePasswordPage: FC = () => {
       type="success"
       showIcon
       action={
-        <Button size="small" type="link" onClick={handleClickToLogin} >
-          Вернуться ко входу
+        <Button size="small" type="link" onClick={handleClickForward} >
+          Вперед
         </Button>
       }
     />}
