@@ -57,7 +57,7 @@ export const StandCard: FC<StandCardProps> = ({
       style={{ width: 300, marginTop: 16, display: 'flex', justifyContent: 'space-between', flexDirection: 'column' }}
       actions={[
         <Tooltip title={formattedComments}>
-          <CommentOutlined style={{ fontSize: '180%'}} hidden={!formattedComments || !isStandBusy}/>
+          <CommentOutlined style={{ fontSize: '180%'}} hidden={formattedComments === "null" || !formattedComments || !isStandBusy }/>
         </Tooltip>,
         <Button type="primary" disabled={isButtonDisabled || isCurrentUserStandsLimitEnabled} onClick={handleClick}>
           {isUserStand ? 'Освободить' : 'Занять'}
