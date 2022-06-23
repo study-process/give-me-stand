@@ -18,9 +18,9 @@ export const UserAvatar: FC<UserAvatarProps> = ({style}) => {
     <div style={style}>
       <Badge.Ribbon text={team} placement="start">
         <div style={{ display: 'flex', paddingTop: '1.25rem', alignItems: 'center' }}>
-          <Avatar shape="square" icon={<UserOutlined />} size={48} />
+          <Avatar shape="square" icon={<UserOutlined />} size={40} />
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <Text type="secondary" style={{paddingLeft: '0.5rem', fontSize: '1rem'}}>{username}</Text>
+            <Text type="secondary" style={{paddingLeft: '0.5rem', fontSize: '0.875rem'}}>{username}</Text>
             {!isUserCanReleaseStand && !isStandsLoading && <Text type="danger" style={{ paddingLeft: "0.5rem", fontSize: "0.75rem" }}>
               {`Достигнут лимит занимаемых стендов: ${maxUsersStandsCount}`}
             </Text>}
