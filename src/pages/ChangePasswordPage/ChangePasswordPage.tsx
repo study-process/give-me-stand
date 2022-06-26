@@ -72,7 +72,7 @@ export const ChangePasswordPage: FC = () => {
           name="password"
           rules={[{ required: true, message: "не менее 6 символов", min: 6 }]}
         >
-          <Input />
+          <Input.Password />
         </Form.Item>
 
         <Form.Item
