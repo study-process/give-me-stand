@@ -1,7 +1,8 @@
 export enum NavigationPageTypesEnum {
   HomePage = '/',
   LoginPage = '/login',
-  AdminPage = '/admin'
+  AdminPage = '/admin',
+  StandsPage = '/team-stands'
 }
 
 export const AUTHORIZED_URL = 'https://give-me-stand-server.herokuapp.com/login'

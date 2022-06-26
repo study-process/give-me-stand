@@ -1,3 +1,3 @@
 export interface HeaderProps {
-  onChange: () => void;
+  onChange?: () => void;
 }
