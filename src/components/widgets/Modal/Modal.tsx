@@ -47,7 +47,6 @@ export const Modal: FC<{
 
   const handleOk = () => {
     const formValues = form.getFieldsValue()
-    console.log(Object.entries(formValues))
     if (!Object.entries(formValues).some(
       value => value.includes(undefined) && !value.includes('comments')
     )) {

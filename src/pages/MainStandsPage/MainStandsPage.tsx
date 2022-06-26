@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
 import { useStore } from 'effector-react'
 import useLocalStorage from "use-local-storage";
-import { UserPage } from 'src/pages';
+import { StandsPage } from 'src/pages';
 import { Header } from 'src/components/Header'
 import { ErrorPage } from "../ErrorPage";
 import { $currentUser, currentUser, setCurrentUserEvent } from "../../store";
@@ -9,7 +9,7 @@ import { ChangePasswordPage } from "../ChangePasswordPage";
 import { LOCAL_STORAGE_USER, NavigationPageTypesEnum, ROOT_URL } from "../../constants";
 import { useNavigate } from "react-router-dom";
 
-export const MainPage: FC = () => {
+export const MainStandsPage: FC = () => {
   const [localStorageUser, setLocalStorageUser] =
     useLocalStorage<currentUser | null>(LOCAL_STORAGE_USER, null)
   const user = useStore($currentUser)
@@ -54,7 +54,7 @@ export const MainPage: FC = () => {
   return (
     <>
       <Header />
-      <UserPage userId={user.userId || localStorageUser?.userId}/>
+      <StandsPage />
     </>
   )
 }

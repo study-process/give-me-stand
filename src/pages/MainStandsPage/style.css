@@ -1,0 +1,13 @@
+.card-container {
+    position: fixed;
+    top: 2rem;
+    left: 8rem;
+    width: 100vh;
+}
+
+.content-wrapper {
+    display: flex;
+    justify-content: center;
+    padding-top: 2rem;
+    width: 100%;
+}
