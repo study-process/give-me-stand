@@ -9,6 +9,8 @@ import { NavigationPageTypesEnum, ROOT_URL } from "../../constants";
 import { UserAvatar } from "../UserAvatar";
 import { LOCAL_STORAGE_USER } from '../../constants'
 import { useLocation } from 'react-router-dom';
+import { useThemeSwitcher } from "react-css-theme-switcher";
+import { ThemeSwitcher } from "../ThemeSwitcher";
 
 export const Header: FC<HeaderProps> = ({ onChange }) => {
   const navigate = useNavigate()

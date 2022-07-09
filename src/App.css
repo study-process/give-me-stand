@@ -21,3 +21,12 @@
     padding-top: 0;
   }
 }
+
+.ThemeSwitcher {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  left: 1.25rem;
+  top: 1.25rem;
+  z-index: 100;
+}
