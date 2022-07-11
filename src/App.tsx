@@ -1,19 +1,21 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import './App.css'
 import { Routes, Route } from 'react-router-dom'
 import { LoginPage } from 'src/pages/LoginPage'
 import { MainPage, AdminPage, MainStandsPage } from 'src/pages/index'
+// import useLocalStorage from "use-local-storage";
 import { NavigationPageTypesEnum, ROOT_URL } from "./constants";
 import { InitialContainer } from "./components/InitialContainer";
 import { ErrorPage } from "./pages/ErrorPage";
 import { useThemeSwitcher } from "react-css-theme-switcher";
-import { Switch, Input } from "antd";
 import { ThemeSwitcher } from "./components/ThemeSwitcher";
 
 
 const App = () => {
   const [isDarkMode, setIsDarkMode] = React.useState(false);
-  const { switcher, currentTheme, status, themes } = useThemeSwitcher();
+  //TODO: доделать сохранение темы в loacalStorage
+  // const [isDarkMode, setIsDarkMode] = useLocalStorage('isDarkMode', false);
+  const { switcher, status, themes } = useThemeSwitcher();
 
   const toggleTheme = (isChecked: boolean) => {
     setIsDarkMode(isChecked);

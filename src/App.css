@@ -26,6 +26,7 @@
   position: absolute;
   display: flex;
   align-items: center;
+  justify-content: center;
   left: 1.25rem;
   top: 1.25rem;
   z-index: 100;
