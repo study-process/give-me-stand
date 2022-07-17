@@ -9,10 +9,11 @@ import { NavigationPageTypesEnum, ROOT_URL } from "../../constants";
 import { UserAvatar } from "../UserAvatar";
 import { LOCAL_STORAGE_USER } from '../../constants'
 import { useLocation } from 'react-router-dom';
-import { useThemeSwitcher } from "react-css-theme-switcher";
-import { ThemeSwitcher } from "../ThemeSwitcher";
+import { useStore } from "effector-react";
+import { $isDarkMode } from "../../store/theme";
 
 export const Header: FC<HeaderProps> = ({ onChange }) => {
+  const isDarkMode = useStore($isDarkMode)
   const navigate = useNavigate()
   const location = useLocation()
   const value =
@@ -29,7 +30,7 @@ export const Header: FC<HeaderProps> = ({ onChange }) => {
   }, [])
 
   return <>
-    <div style={headerWrapperStyle}>
+    <div style={{...headerWrapperStyle, backgroundColor: isDarkMode ? '#303030' : '#FFFFFF'}}>
       <Radio.Group onChange={onChange} defaultValue="1" value={value}>
         <Radio.Button
           value="1"
