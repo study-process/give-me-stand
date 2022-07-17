@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/give-me-stand/static/css/main.bf9bd34a.css",
-    "main.js": "/give-me-stand/static/js/main.7aa2585f.js",
+    "main.css": "/give-me-stand/static/css/main.88c9fc2a.css",
+    "main.js": "/give-me-stand/static/js/main.d508c19f.js",
     "index.html": "/give-me-stand/index.html",
-    "main.bf9bd34a.css.map": "/give-me-stand/static/css/main.bf9bd34a.css.map",
-    "main.7aa2585f.js.map": "/give-me-stand/static/js/main.7aa2585f.js.map"
+    "main.88c9fc2a.css.map": "/give-me-stand/static/css/main.88c9fc2a.css.map",
+    "main.d508c19f.js.map": "/give-me-stand/static/js/main.d508c19f.js.map"
   },
   "entrypoints": [
-    "static/css/main.bf9bd34a.css",
-    "static/js/main.7aa2585f.js"
+    "static/css/main.88c9fc2a.css",
+    "static/js/main.d508c19f.js"
   ]
 }
