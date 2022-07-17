@@ -1,7 +1,7 @@
 import { FC, useMemo } from "react";
 import { StandCardProps } from './interfaces'
 import { Skeleton, Card, Avatar, Button, Descriptions, Tooltip} from 'antd';
-import { CommentOutlined } from '@ant-design/icons';
+import { CommentOutlined, ContainerFilled } from '@ant-design/icons';
 import { statusTypeEnum } from "./constants";
 import {statusBusyStyle, statusFreeStyle} from './styles'
 import { setOpenStandEvent } from "src/store/stands";
@@ -14,7 +14,7 @@ const labelStyle = { fontSize: "0.75rem", fontWeight: "bold" }
 const avatarStyle: React.CSSProperties = {
   position: 'absolute',
   top: '1.5rem',
-  backgroundColor: '#FFFFFF',
+  fontSize: '180%'
 }
 
 export const StandCard: FC<StandCardProps> = ({
@@ -66,16 +66,15 @@ export const StandCard: FC<StandCardProps> = ({
     >
       <Skeleton loading={loading} avatar active>
         <Meta
-          avatar={<Avatar
-            src="https://img.icons8.com/material/48/000000/server--v1.png"
-            style={avatarStyle}
-          />}
+          avatar={
+            <ContainerFilled style={avatarStyle}/>
+          }
           description={<>
             <Descriptions
               contentStyle={itemStyle}
               labelStyle={labelStyle}
               column={1} size="small"
-              style={{ padding: "0.5rem 0 0 2rem" }}
+              style={{ padding: "0.25rem 0 0 2rem" }}
               title={
               <Button type="link" size='small' href={standLink} target="_blank" name="standId" style={{
                 padding: '0 0 0.5rem 0.5rem'

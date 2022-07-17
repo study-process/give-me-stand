@@ -1,6 +1,6 @@
 import * as CSS from 'csstype'
 
-export const headerWrapperStyle: CSS.Properties= {
+export const headerWrapperStyle: CSS.Properties = {
     position: 'fixed',
     top: '0',
     display: 'flex',
