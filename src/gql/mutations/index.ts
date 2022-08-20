@@ -1,5 +1,5 @@
 export * from './createUser'
 export * from './ReleaseStandByID'
 export * from './TakeStandByID'
-export * from './createStand'
+export * from './CreateStand'
 export * from './ChangeUserPassword'
