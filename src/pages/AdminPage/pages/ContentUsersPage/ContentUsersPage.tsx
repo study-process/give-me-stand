@@ -1,8 +1,9 @@
 import React, { FC, useState } from 'react';
 import { useStore } from 'effector-react'
-import { Avatar, Button, List, Form, Input} from "antd";
+import { Avatar, Button, List, Form, Input, Statistic, Popconfirm } from "antd";
 import './styles.css'
 import { $allUsers, getAllUsersEvent } from "../../../../store/Users";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 
 type LayoutType = Parameters<typeof Form>[0]['layout'];
 
@@ -33,6 +34,7 @@ export const ContentUsersPage: FC = () => {
       : null;
 
   return <div className="admin-page__users-container">
+    {!!users.length && <Statistic title="Всего пользователей" value={users?.length} style={{ marginBottom: "2rem" }} />}
       <List
         itemLayout="horizontal"
         dataSource={users}
@@ -45,7 +47,16 @@ export const ContentUsersPage: FC = () => {
             />
             <div className="user-controls">
               <Button type="primary">Редактировать</Button>
-              <Button type="primary" danger>Удалить</Button>
+              <Popconfirm
+                placement="bottomRight"
+                title={`Вы уверены, что хотите удалить пользователя ${item?.username} команды ${item?.team}?`}
+                onConfirm={() => console.log(`${item?.username}`)}
+                okText="Подтвердить"
+                cancelText="Отмена"
+                icon={<QuestionCircleOutlined />}
+              >
+                <Button type="primary" danger>Удалить</Button>
+              </Popconfirm>
             </div>
           </List.Item>
         )}

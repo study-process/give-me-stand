@@ -2,8 +2,8 @@ import React, { FC, useEffect } from "react";
 import { useStore } from 'effector-react'
 import { useMutation } from "@apollo/client";
 
-import { List, Button, Form, Input, Alert, Spin } from "antd";
-import {CloudServerOutlined} from '@ant-design/icons'
+import { List, Button, Form, Input, Alert, Spin, Popconfirm, Statistic} from "antd";
+import { CloudServerOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import './styles.css'
 import { $stands, getStandsEvent } from "../../../../store/stands";
 import { StandCardProps } from "../../../../components/Stands/StandCard/interfaces";
@@ -12,6 +12,7 @@ import { $displayErrorWarning, setErrorWarningEvent } from "../../../../store";
 import { adminLoginMessageTypesEnum } from "../../../LoginPage/constants";
 import { $serverResponseIsLoading, serServerResponseLoadingEvent } from "../../../../store/serverResponse";
 import { ERROR_DUPLICATE_STAND } from "../../../../constants";
+import { DELETE_STAND } from "../../../../gql/mutations/DeleteStand";
 
 export const ContentStandsPage: FC = () => {
   const stands: StandCardProps[] = useStore($stands)
@@ -22,7 +23,8 @@ export const ContentStandsPage: FC = () => {
 
   const [form] = Form.useForm();
 
-  const [CreateStand, {loading, error, data}] = useMutation(CREATE_STAND)
+  const [CreateStand, {error, data}] = useMutation(CREATE_STAND)
+  const [DeleteStand, {error: deletingError, data: deletingData}] = useMutation(DELETE_STAND)
 
   const handleSubmit = (values: { standNumber: string, team: string }) => {
     if (values.standNumber && values.team) {
@@ -40,14 +42,29 @@ export const ContentStandsPage: FC = () => {
     }
   };
 
+  const handleDelete = (standNumber: string) => () => {
+    if (!!standNumber) {
+      serServerResponseLoadingEvent(true)
+      DeleteStand({
+        variables: {
+          id: standNumber
+        },
+        refetchQueries: [
+          {query: GET_ALL_STANDS
+          },],
+        awaitRefetchQueries: true,
+      })
+    }
+  };
+
   useEffect(() => {
-    if (data || error) {
+    if (data || deletingData || error || deletingError) {
       serServerResponseLoadingEvent(false)
     }
     if (error && String(error) === ERROR_DUPLICATE_STAND) {
       alert("Ошибка: Стенд с таким номером уже существует!")
     }
-  }, [error, data])
+  }, [error, data, deletingData, deletingError])
 
   const handleFinishFailed = () => {
     setErrorWarningEvent()
@@ -85,6 +102,7 @@ export const ContentStandsPage: FC = () => {
           <Button type="primary" htmlType="submit" >Добавить стенд</Button>
         </Form.Item>
       </Form>
+      {!!stands.length && <Statistic title="Всего стендов" value={stands?.length} style={{ marginBottom: "2rem" }} />}
       <List
         itemLayout="horizontal"
         dataSource={stands}
@@ -95,7 +113,16 @@ export const ContentStandsPage: FC = () => {
               title={item?.id}
               description={`Команда: ${item?.team}`}
             />
-            <Button type="primary" danger>Удалить</Button>
+            <Popconfirm
+              placement="bottomRight"
+              title={`Вы уверены, что хотите удалить стенд: ${item?.id} команды ${item?.team}?`}
+              onConfirm={handleDelete(`${item?.id}`)}
+              okText="Подтвердить"
+              cancelText="Отмена"
+              icon={<QuestionCircleOutlined />}
+            >
+              <Button type="primary" danger>Удалить</Button>
+            </Popconfirm>
           </List.Item>
         )}
       />
