@@ -2,10 +2,10 @@ import React, { FC, useEffect } from "react";
 import { useStore } from 'effector-react'
 import { useMutation } from "@apollo/client";
 
-import { List, Button, Form, Input, Alert, Spin, Popconfirm, Statistic} from "antd";
-import { CloudServerOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import { List, Button, Form, Input, Alert, Spin, Popconfirm, Statistic, Dropdown, Space, Menu } from "antd";
+import { CloudServerOutlined, QuestionCircleOutlined, DownOutlined } from "@ant-design/icons";
 import './styles.css'
-import { $stands, getStandsEvent } from "../../../../store/stands";
+import { $selectedTeamStands, $stands, getStandsEvent } from "../../../../store/stands";
 import { StandCardProps } from "../../../../components/Stands/StandCard/interfaces";
 import { CREATE_STAND, GET_ALL_STANDS } from "../../../../gql";
 import { $displayErrorWarning, setErrorWarningEvent } from "../../../../store";
@@ -15,9 +15,10 @@ import { ERROR_DUPLICATE_STAND } from "../../../../constants";
 import { DELETE_STAND } from "../../../../gql/mutations/DeleteStand";
 
 export const ContentStandsPage: FC = () => {
-  const stands: StandCardProps[] = useStore($stands)
+  // const stands: StandCardProps[] = useStore($stands)
   const errorWarningMessage = useStore($displayErrorWarning)
   const serverResponseIsLoading = useStore($serverResponseIsLoading)
+  const {currentStandsTeam, teamStands} = useStore($selectedTeamStands) ?? {}
 
   getStandsEvent('/stands')
 
@@ -25,6 +26,26 @@ export const ContentStandsPage: FC = () => {
 
   const [CreateStand, {error, data}] = useMutation(CREATE_STAND)
   const [DeleteStand, {error: deletingError, data: deletingData}] = useMutation(DELETE_STAND)
+
+  const menu = (
+    <Menu
+      onClick={(label) => console.log(label)}
+      items={[
+        {
+          label: '1st menu item',
+          key: '1',
+        },
+        {
+          label: '2nd menu item',
+          key: '2',
+        },
+        {
+          label: '3rd menu item',
+          key: '3',
+        },
+      ]}
+    />
+  );
 
   const handleSubmit = (values: { standNumber: string, team: string }) => {
     if (values.standNumber && values.team) {
@@ -101,11 +122,21 @@ export const ContentStandsPage: FC = () => {
         <Form.Item >
           <Button type="primary" htmlType="submit" >Добавить стенд</Button>
         </Form.Item>
+        <Form.Item>
+          <Dropdown overlay={menu}>
+            <Button>
+              <Space>
+                {`Стенды команды: ${currentStandsTeam}`}
+                <DownOutlined />
+              </Space>
+            </Button>
+          </Dropdown>
+        </Form.Item>
       </Form>
-      {!!stands.length && <Statistic title="Всего стендов" value={stands?.length} style={{ marginBottom: "2rem" }} />}
+      {!!teamStands?.length && <Statistic title="Всего стендов" value={teamStands?.length} style={{ marginBottom: "2rem" }} />}
       <List
         itemLayout="horizontal"
-        dataSource={stands}
+        dataSource={teamStands}
         renderItem={item => (
           <List.Item>
             <List.Item.Meta

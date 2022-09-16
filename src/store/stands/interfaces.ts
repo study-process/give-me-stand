@@ -1,3 +1,6 @@
+import { $selectedTeamStands } from "./stores";
+import { StandCardProps } from "../../components/Stands/StandCard/interfaces";
+
 export interface OpenStand {
   id: string | undefined
   userId: number
@@ -12,4 +15,9 @@ export interface maxUsersStandsCount {
   isMaxUsersStandsCountEnabled?: boolean | null
   maxUsersStandsCount?: number | null
   isUserCanReleaseStand?: boolean | null
+}
+
+export interface SelectedTeamStands {
+  currentStandsTeam?: string | null;
+  teamStands?: StandCardProps[];
 }

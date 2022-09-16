@@ -15,10 +15,11 @@ import {
   setOpenStandToTakeEvent,
   $openStandToTake,
   resetOpenStandEvent,
-  deleteUserStandFromStoreEvent, $filteredUserStands, $maxUsersStandsCount
+  deleteUserStandFromStoreEvent, $filteredUserStands, $maxUsersStandsCount, $selectedTeamStands
 } from "./index";
 import { getAllStandFx, getUserStandsFx, releaseStandFx } from "./effects";
 import { $currentUser } from "../currentUser";
+import { StandCardProps } from "../../components/Stands/StandCard/interfaces";
 
 $stands.on(getAllStandFx.doneData, (_, stands) => stands).reset(resetStandsEvent)
 $CurrentStands
@@ -83,5 +84,18 @@ sample({
 forward({
   from: $standForRelease,
   to: releaseStandFx,
+})
+
+sample({
+  source: [$stands, $currentUser],
+  fn: ([stands, currentUser]) => {
+    const currentStandsTeam = currentUser?.team ?? ''
+    const teamStands = [...stands.filter((stand: StandCardProps) => stand?.team === currentStandsTeam)] ?? []
+    return {
+      currentStandsTeam,
+      teamStands
+    }
+  },
+  target: $selectedTeamStands,
 })
 
