@@ -1,23 +1,28 @@
 import React, { FC, useEffect } from "react";
 import { useStore } from 'effector-react'
 import { useMutation } from "@apollo/client";
-
-import { List, Button, Form, Input, Alert, Spin, Popconfirm, Statistic, Dropdown, Space, Menu } from "antd";
+import type { MenuProps } from 'antd';
+import { List, Button, Form, Input, Alert, Spin, Popconfirm, Statistic, Dropdown, Space, Menu, Tag } from "antd";
 import { CloudServerOutlined, QuestionCircleOutlined, DownOutlined } from "@ant-design/icons";
 import './styles.css'
-import { $selectedTeamStands, $stands, getStandsEvent } from "../../../../store/stands";
-import { StandCardProps } from "../../../../components/Stands/StandCard/interfaces";
+import {
+  $availableTeamsForStandsList,
+  $selectedTeamStands,
+  getStandsEvent,
+  setSelectedTeamStands
+} from "../../../../store/stands";
 import { CREATE_STAND, GET_ALL_STANDS } from "../../../../gql";
-import { $displayErrorWarning, setErrorWarningEvent } from "../../../../store";
+import { $currentUser, $displayErrorWarning, setErrorWarningEvent } from "../../../../store";
 import { adminLoginMessageTypesEnum } from "../../../LoginPage/constants";
 import { $serverResponseIsLoading, serServerResponseLoadingEvent } from "../../../../store/serverResponse";
 import { ERROR_DUPLICATE_STAND } from "../../../../constants";
 import { DELETE_STAND } from "../../../../gql/mutations/DeleteStand";
 
 export const ContentStandsPage: FC = () => {
-  // const stands: StandCardProps[] = useStore($stands)
   const errorWarningMessage = useStore($displayErrorWarning)
   const serverResponseIsLoading = useStore($serverResponseIsLoading)
+  const availableTeamsForStandsList = useStore($availableTeamsForStandsList)
+  const {team} = useStore($currentUser)
   const {currentStandsTeam, teamStands} = useStore($selectedTeamStands) ?? {}
 
   getStandsEvent('/stands')
@@ -27,23 +32,19 @@ export const ContentStandsPage: FC = () => {
   const [CreateStand, {error, data}] = useMutation(CREATE_STAND)
   const [DeleteStand, {error: deletingError, data: deletingData}] = useMutation(DELETE_STAND)
 
+  const handleSelectTeam: MenuProps['onClick'] = e => {
+    setSelectedTeamStands(e.key)
+  };
+
   const menu = (
     <Menu
-      onClick={(label) => console.log(label)}
-      items={[
-        {
-          label: '1st menu item',
-          key: '1',
-        },
-        {
-          label: '2nd menu item',
-          key: '2',
-        },
-        {
-          label: '3rd menu item',
-          key: '3',
-        },
-      ]}
+      onClick={handleSelectTeam}
+      items={availableTeamsForStandsList?.map(
+        stand => ({
+          label: stand,
+          key: stand
+        })
+      )}
     />
   );
 
@@ -133,7 +134,17 @@ export const ContentStandsPage: FC = () => {
           </Dropdown>
         </Form.Item>
       </Form>
-      {!!teamStands?.length && <Statistic title="Всего стендов" value={teamStands?.length} style={{ marginBottom: "2rem" }} />}
+      {!!teamStands?.length && (
+        <>
+          {`${currentStandsTeam}` !== `${team}` &&
+            <Tag
+              color="volcano"
+              style={{
+                marginBottom: '1rem'
+              }}>Не моя команда</Tag>}
+          <Statistic title={`Всего стендов команды "${currentStandsTeam}"`} value={teamStands?.length} style={{ marginBottom: "2rem" }} />
+        </>
+      )}
       <List
         itemLayout="horizontal"
         dataSource={teamStands}

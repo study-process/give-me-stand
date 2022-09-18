@@ -3,6 +3,7 @@ import { maxUsersStandsCount, OpenStand, SelectedTeamStands } from "./interfaces
 import { StandCardProps } from "../../components/Stands/StandCard/interfaces";
 
 export const $stands = domain.createStore<StandCardProps[]>([])
+export const $availableTeamsForStandsList = domain.createStore<string[]>([])
 export const $CurrentStands = domain.createStore<StandCardProps[]>([])
 export const $standForRelease = domain.createStore<string>('')
 export const $openStand = domain.createStore<string>('')

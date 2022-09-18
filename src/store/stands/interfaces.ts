@@ -1,4 +1,3 @@
-import { $selectedTeamStands } from "./stores";
 import { StandCardProps } from "../../components/Stands/StandCard/interfaces";
 
 export interface OpenStand {
