@@ -1,15 +1,17 @@
-import React, { FC, useEffect, useState } from "react";
-import { DatePicker, Form, Input, Modal as ModalAntd, Radio, Switch } from "antd";
+import React, { FC } from "react";
+import { Form, Input, Modal as ModalAntd, Switch } from "antd";
+import { UserFormModal } from "../../../../interfaces";
 import { useStore } from "effector-react";
-import { useMutation } from "@apollo/client";
+import { $selectedTeamUsers } from "../../../../../../store/Users";
 
 export const UserModal: FC<{
   isVisible: boolean,
-  onSubmit: () => void,
+  onSubmit: (formValues: UserFormModal) => void,
   onCancel: () => void,
 }> = (
   { isVisible , onSubmit, onCancel }
 ) => {
+  const { currentUsersTeam } = useStore($selectedTeamUsers) ?? {}
   const [form] = Form.useForm();
 
   const handleOk = () => {
@@ -18,42 +20,8 @@ export const UserModal: FC<{
       value => value.includes(undefined) && !value.includes('comments')
     )) {
       form.submit()
-      console.log(formValues)
-      //
-      // setOpenStandToTakeEvent({
-      //   id: standId,
-      //   userId: userId,
-      //   branch: formValues.branch,
-      //   whoIsBusy: whoIsBusy,
-      //   busyUntil: String(formValues.busyUntil),
-      //   comments: formValues.comments,
-      // })
-      //
-      // TakeStandByID({
-      //   variables: {
-      //     id: standId,
-      //     userId: userId,
-      //     branch: formValues?.branch,
-      //     whoIsBusy: whoIsBusy,
-      //     busyUntil: String(formValues.busyUntil),
-      //     comments: formValues?.comments,
-      //     matterMostLink: currenUser.matterMostLink,
-      //   },
-      //   refetchQueries: [
-      //     {query: GET_ALL_STANDS
-      //     },
-      //     {query: GET_STAND_BY_ID,
-      //       variables: { userId: userId}
-      //     }
-      //   ],
-      //   awaitRefetchQueries: true,
-      // })
-      //
-      // setIsStandsLoadingEvent(false)
-
-      onSubmit()
+      onSubmit(formValues)
       form.resetFields()
-      return onSubmit()
     }
     else {
       alert('Необходимо заполнить все обязательные поля!')
@@ -88,8 +56,8 @@ export const UserModal: FC<{
         <Form.Item label="Имя: " required name="username">
           <Input placeholder="видят другие пользователи"/>
         </Form.Item>
-        <Form.Item label="Команда: " required name="team">
-          <Input placeholder="указывается с учетом регистра"/>
+        <Form.Item label="Команда: " required name="team" initialValue={currentUsersTeam}>
+          <Input placeholder="указывается с учетом регистра" />
         </Form.Item>
         <Form.Item label="Ссылка на matterMost: " required name="matterMostLink">
           <Input placeholder="в формате @user"/>

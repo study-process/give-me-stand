@@ -11,11 +11,12 @@ import {
 import { DownOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { $currentUser } from "../../../../store";
 import { $serverResponseIsLoading, serServerResponseLoadingEvent } from "../../../../store/serverResponse";
-import { GET_ALL_USERS } from "../../../../gql";
+import { CREATE_USER, GET_ALL_USERS } from "../../../../gql";
 import { useMutation } from "@apollo/client";
 import { DELETE_USER } from "../../../../gql/mutations/DeleteUser";
-import { ERROR_DUPLICATE_STAND } from "../../../../constants";
+import { ERROR_DUPLICATE_USER_LOGIN } from "../../../../constants";
 import { UserModal } from "./components";
+import { UserFormModal } from "../../interfaces";
 
 export const ContentUsersPage: FC = () => {
   const { team } = useStore($currentUser)
@@ -29,9 +30,9 @@ export const ContentUsersPage: FC = () => {
   getAllUsersEvent()
 
   const [DeleteUser, {error, data}] = useMutation(DELETE_USER)
+  const [CreateUser, {error: createError, data: createData}] = useMutation(CREATE_USER)
 
   const handleSelectTeam: MenuProps['onClick'] = e => {
-    //TODO поменять на users
     setSelectedTeamUsers(e.key)
   };
 
@@ -51,8 +52,22 @@ export const ContentUsersPage: FC = () => {
   };
 
   const handleModalOpen = () => setIsUserModalVisible(true)
-  const handleModalSubmit = () => setIsUserModalVisible(false)
   const handleModalCancel = () => setIsUserModalVisible(false)
+  const handleModalSubmit = (formValues: UserFormModal) => {
+    serServerResponseLoadingEvent(true)
+    CreateUser({
+      variables: {
+        username: formValues.username,
+        login: formValues.login,
+        isAdmin: formValues.isAdmin,
+        matterMostLink: formValues.matterMostLink,
+        team: formValues.team,
+      },
+      refetchQueries: [{query: GET_ALL_USERS }],
+      awaitRefetchQueries: true,
+    })
+    setIsUserModalVisible(false)
+  }
 
   const menu = (
     <Menu
@@ -67,23 +82,26 @@ export const ContentUsersPage: FC = () => {
   );
 
   useEffect(() => {
-    if (data || error) {
+    if (data || createData || error || createError) {
       serServerResponseLoadingEvent(false)
     }
     if (error) {
       alert(`Ошибка: ${error}`)
     }
-  }, [error, data])
+    if (createError && String(createError) === ERROR_DUPLICATE_USER_LOGIN) {
+      alert("Ошибка: Пользователь с таким логином уже существует!")
+    }
+  }, [error, data, createData, createError])
 
   return <div className="admin-page__users-container">
 
-    <UserModal isVisible={isUserModalVisible} onSubmit={handleModalSubmit} onCancel={handleModalCancel}/>
+    {isUserModalVisible && <UserModal isVisible={isUserModalVisible} onSubmit={handleModalSubmit} onCancel={handleModalCancel} />}
 
     <Spin spinning={serverResponseIsLoading} delay={500}>
       <Form
         layout='inline'
         form={form}
-        style={{marginBottom: '2rem', display: 'flex', gap: '2rem'}}
+        style={{marginBottom: '2rem'}}
       >
         <Form.Item>
           <Dropdown overlay={menu}>
@@ -117,7 +135,7 @@ export const ContentUsersPage: FC = () => {
             <List.Item.Meta
               avatar={<Avatar src="https://joeschmoe.io/api/v1/jack" />}
               title={item.username}
-              description={`Команда: ${item.team} · Админ: ${item.isAdmin ? 'Да' : 'Нет'}`}
+              description={`Команда: ${item.team} · Админ: ${item.isAdmin ? 'Да' : 'Нет'} · Логин: ${item.login}`}
             />
             <div className="user-controls">
               <Button type="primary" disabled={true} >Редактировать</Button>

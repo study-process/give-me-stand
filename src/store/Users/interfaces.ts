@@ -2,5 +2,6 @@ export interface UserProps {
   id: number,
   username: string,
   team: string,
-  isAdmin: boolean
+  isAdmin: boolean,
+  login?: string,
 }
