@@ -1,4 +1,5 @@
 import { StandCardProps } from "../../components/Stands/StandCard/interfaces";
+import { UserProps } from "../Users/interfaces";
 
 export interface OpenStand {
   id: string | undefined
@@ -19,4 +20,9 @@ export interface maxUsersStandsCount {
 export interface SelectedTeamStands {
   currentStandsTeam?: string | null;
   teamStands?: StandCardProps[];
+}
+
+export interface SelectedTeamUsers {
+  currentUsersTeam?: string | null;
+  teamUsers?: UserProps[];
 }

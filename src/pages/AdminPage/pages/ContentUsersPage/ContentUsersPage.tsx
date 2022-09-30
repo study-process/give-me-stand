@@ -1,43 +1,109 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect } from "react";
 import { useStore } from 'effector-react'
-import { Avatar, Button, List, Form, Input, Statistic, Popconfirm } from "antd";
+import { Avatar, Button, List, Statistic, Popconfirm, Menu, MenuProps, Form, Dropdown, Space, Tag, Spin } from "antd";
 import './styles.css'
-import { $allUsers, getAllUsersEvent } from "../../../../store/Users";
-import { QuestionCircleOutlined } from "@ant-design/icons";
-
-type LayoutType = Parameters<typeof Form>[0]['layout'];
+import {
+  $availableTeamsForUserList,
+  $selectedTeamUsers,
+  getAllUsersEvent,
+  setSelectedTeamUsers
+} from "../../../../store/Users";
+import { DownOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import { $currentUser } from "../../../../store";
+import { $serverResponseIsLoading, serServerResponseLoadingEvent } from "../../../../store/serverResponse";
+import { GET_ALL_USERS } from "../../../../gql";
+import { useMutation } from "@apollo/client";
+import { DELETE_USER } from "../../../../gql/mutations/DeleteUser";
+import { ERROR_DUPLICATE_STAND } from "../../../../constants";
 
 export const ContentUsersPage: FC = () => {
-  const users = useStore($allUsers)
+  const { team } = useStore($currentUser)
+  const serverResponseIsLoading = useStore($serverResponseIsLoading)
+  const availableTeamsForUserList = useStore($availableTeamsForUserList)
+  const { teamUsers, currentUsersTeam } = useStore($selectedTeamUsers) ?? {}
+  const [form] = Form.useForm();
+
   getAllUsersEvent()
 
-  const [form] = Form.useForm();
-  const [formLayout, setFormLayout] = useState<LayoutType>('horizontal');
+  const [DeleteUser, {error, data}] = useMutation(DELETE_USER)
 
-  const onFormLayoutChange = ({ layout }: { layout: LayoutType }) => {
-    setFormLayout(layout);
+  const handleSelectTeam: MenuProps['onClick'] = e => {
+    //TODO поменять на users
+    setSelectedTeamUsers(e.key)
   };
 
-  const formItemLayout =
-    formLayout === 'horizontal'
-      ? {
-        labelCol: { span: 4 },
-        wrapperCol: { span: 14 },
-      }
-      : null;
+  const handleDelete = (userId: number) => () => {
+    if (!!userId) {
+      serServerResponseLoadingEvent(true)
+      DeleteUser({
+        variables: {
+          id: userId
+        },
+        refetchQueries: [
+          {query: GET_ALL_USERS
+          },],
+        awaitRefetchQueries: true,
+      })
+    }
+  };
 
-  const buttonItemLayout =
-    formLayout === 'horizontal'
-      ? {
-        wrapperCol: { span: 14, offset: 4 },
-      }
-      : null;
+  const menu = (
+    <Menu
+      onClick={handleSelectTeam}
+      items={availableTeamsForUserList?.map(
+        team => ({
+          label: team,
+          key: team
+        })
+      )}
+    />
+  );
+
+  useEffect(() => {
+    if (data || error) {
+      serServerResponseLoadingEvent(false)
+    }
+    if (error) {
+      alert(`Ошибка: ${error}`)
+    }
+  }, [error, data])
 
   return <div className="admin-page__users-container">
-    {!!users.length && <Statistic title="Всего пользователей" value={users?.length} style={{ marginBottom: "2rem" }} />}
+    <Spin spinning={serverResponseIsLoading} delay={500}>
+      <Form
+        layout='inline'
+        form={form}
+        style={{marginBottom: '2rem', display: 'flex', gap: '2rem'}}
+        onFinish={() => {}}
+        onFinishFailed={() => {}}
+      >
+        <Form.Item>
+          <Dropdown overlay={menu}>
+            <Button>
+              <Space>
+                {`Пользователи команды: ${currentUsersTeam}`}
+                <DownOutlined />
+              </Space>
+            </Button>
+          </Dropdown>
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary">Добавить пользователя</Button>
+        </Form.Item>
+      </Form>
+      {!!teamUsers?.length && (
+        <>
+          {`${currentUsersTeam}` !== `${team}` &&
+            <Tag
+              color="volcano"
+              style={{
+                marginBottom: '1rem'
+              }}>Не моя команда</Tag>}</>
+      )}
+      {!!teamUsers?.length && <Statistic title="Всего пользователей команды" value={teamUsers?.length} style={{ marginBottom: "2rem" }} />}
       <List
         itemLayout="horizontal"
-        dataSource={users}
+        dataSource={teamUsers}
         renderItem={item => (
           <List.Item>
             <List.Item.Meta
@@ -46,11 +112,11 @@ export const ContentUsersPage: FC = () => {
               description={`Команда: ${item.team} · Админ: ${item.isAdmin ? 'Да' : 'Нет'}`}
             />
             <div className="user-controls">
-              <Button type="primary">Редактировать</Button>
+              <Button type="primary" disabled={true} >Редактировать</Button>
               <Popconfirm
                 placement="bottomRight"
                 title={`Вы уверены, что хотите удалить пользователя ${item?.username} команды ${item?.team}?`}
-                onConfirm={() => console.log(`${item?.username}`)}
+                onConfirm={handleDelete(item.id)}
                 okText="Подтвердить"
                 cancelText="Отмена"
                 icon={<QuestionCircleOutlined />}
@@ -61,5 +127,7 @@ export const ContentUsersPage: FC = () => {
           </List.Item>
         )}
       />
+    </Spin>
+
   </div>
 }
