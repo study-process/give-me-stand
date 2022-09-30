@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useStore } from 'effector-react'
 import { Avatar, Button, List, Statistic, Popconfirm, Menu, MenuProps, Form, Dropdown, Space, Tag, Spin } from "antd";
 import './styles.css'
@@ -15,12 +15,15 @@ import { GET_ALL_USERS } from "../../../../gql";
 import { useMutation } from "@apollo/client";
 import { DELETE_USER } from "../../../../gql/mutations/DeleteUser";
 import { ERROR_DUPLICATE_STAND } from "../../../../constants";
+import { UserModal } from "./components";
 
 export const ContentUsersPage: FC = () => {
   const { team } = useStore($currentUser)
   const serverResponseIsLoading = useStore($serverResponseIsLoading)
   const availableTeamsForUserList = useStore($availableTeamsForUserList)
   const { teamUsers, currentUsersTeam } = useStore($selectedTeamUsers) ?? {}
+
+  const [isUserModalVisible, setIsUserModalVisible] = useState(false)
   const [form] = Form.useForm();
 
   getAllUsersEvent()
@@ -47,6 +50,10 @@ export const ContentUsersPage: FC = () => {
     }
   };
 
+  const handleModalOpen = () => setIsUserModalVisible(true)
+  const handleModalSubmit = () => setIsUserModalVisible(false)
+  const handleModalCancel = () => setIsUserModalVisible(false)
+
   const menu = (
     <Menu
       onClick={handleSelectTeam}
@@ -69,13 +76,14 @@ export const ContentUsersPage: FC = () => {
   }, [error, data])
 
   return <div className="admin-page__users-container">
+
+    <UserModal isVisible={isUserModalVisible} onSubmit={handleModalSubmit} onCancel={handleModalCancel}/>
+
     <Spin spinning={serverResponseIsLoading} delay={500}>
       <Form
         layout='inline'
         form={form}
         style={{marginBottom: '2rem', display: 'flex', gap: '2rem'}}
-        onFinish={() => {}}
-        onFinishFailed={() => {}}
       >
         <Form.Item>
           <Dropdown overlay={menu}>
@@ -88,7 +96,7 @@ export const ContentUsersPage: FC = () => {
           </Dropdown>
         </Form.Item>
         <Form.Item>
-          <Button type="primary">Добавить пользователя</Button>
+          <Button type="primary" onClick={handleModalOpen}>Добавить пользователя</Button>
         </Form.Item>
       </Form>
       {!!teamUsers?.length && (
