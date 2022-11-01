@@ -18,6 +18,7 @@ import { $isDarkMode } from "../../store/theme";
 import useLocalStorage from "use-local-storage";
 import { ErrorPage } from "../ErrorPage";
 import { ChangePasswordPage } from "../ChangePasswordPage";
+import { MainPage } from "../MainPage";
 
 const { Header, Sider, Content } = Layout;
 
@@ -37,6 +38,12 @@ export const AdminPage: FC = () => {
       setLocalStorageUser(user)
     }
   }, [user]);
+
+  console.log(user, 'user')
+
+  if (!user?.isAdmin && !localStorageUser?.isAdmin) {
+    return <ErrorPage />
+  }
 
   useEffect(() => {
     if (!user.userId && localStorageUser?.userId) {
