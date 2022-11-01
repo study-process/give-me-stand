@@ -39,8 +39,6 @@ export const AdminPage: FC = () => {
     }
   }, [user]);
 
-  console.log(user, 'user')
-
   if (!user?.isAdmin && !localStorageUser?.isAdmin) {
     return <ErrorPage />
   }
