@@ -15,10 +15,15 @@ import {
   setOpenStandToTakeEvent,
   $openStandToTake,
   resetOpenStandEvent,
-  deleteUserStandFromStoreEvent, $filteredUserStands, $maxUsersStandsCount
+  deleteUserStandFromStoreEvent,
+  $filteredUserStands,
+  $maxUsersStandsCount,
+  $selectedTeamStands,
+  $availableTeamsForStandsList, setSelectedTeamStands
 } from "./index";
 import { getAllStandFx, getUserStandsFx, releaseStandFx } from "./effects";
 import { $currentUser } from "../currentUser";
+import { StandCardProps } from "../../components/Stands/StandCard/interfaces";
 
 $stands.on(getAllStandFx.doneData, (_, stands) => stands).reset(resetStandsEvent)
 $CurrentStands
@@ -85,4 +90,38 @@ forward({
   to: releaseStandFx,
 })
 
+sample({
+  source: [$stands, $currentUser],
+  fn: ([stands, currentUser]) => {
+    const currentStandsTeam = currentUser?.team ?? ''
+    const teamStands = [...stands.filter((stand: StandCardProps) => stand?.team === currentStandsTeam)] ?? []
+    return {
+      currentStandsTeam,
+      teamStands
+    }
+  },
+  target: $selectedTeamStands,
+})
 
+sample({
+  source: $stands,
+  fn: (stands) => {
+    const standsTeams = stands?.map((stand) => stand.team) ?? []
+    return Array.from(new Set(standsTeams)) as string[];
+  },
+  target: $availableTeamsForStandsList
+})
+
+sample({
+  clock: setSelectedTeamStands,
+  source: $stands,
+  fn: (stands, team) => {
+    const newTeam = team ?? ''
+    const teamStands = [...stands.filter((stand: StandCardProps) => stand?.team === newTeam)] ?? []
+    return {
+      currentStandsTeam: newTeam,
+      teamStands,
+    }
+  },
+  target: $selectedTeamStands
+})

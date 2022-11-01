@@ -2,15 +2,22 @@ import { gql } from '@apollo/client'
 
 export const CREATE_USER = gql`
   mutation CreateUser(
-    $first_name: String
-    $second_name: String
+    $username: String
     $login: String
-    $password: String
+    $matterMostLink: String
+    $team: String
+    $isAdmin: Boolean
   ) {
-      insert_users(objects: {first_name: $first_name, second_name: $second_name, login: $login, password: $password}) {
+      insert_users(objects: {
+          username: $username,
+          login: $login,
+          isAdmin: $isAdmin,
+          matterMostLink: $matterMostLink,
+          team: $team,
+      }) {
           returning {
-              first_name
-              second_name
+              username
+              team
               id
           }
       }
