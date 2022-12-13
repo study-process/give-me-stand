@@ -9,7 +9,7 @@ const FetchAllUsers = async () => {
     GET_ALL_USERS
   )
   if (!error) {
-    return data?.users
+    return data?.users_new
   }
   throw error
 }

@@ -8,7 +8,7 @@ export const CREATE_USER = gql`
     $team: String
     $isAdmin: Boolean
   ) {
-      insert_users(objects: {
+      insert_users_new(objects: {
           username: $username,
           login: $login,
           isAdmin: $isAdmin,

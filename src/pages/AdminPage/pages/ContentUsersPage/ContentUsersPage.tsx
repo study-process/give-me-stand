@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { useStore } from 'effector-react'
 import { Avatar, Button, List, Statistic, Popconfirm, Menu, MenuProps, Form, Dropdown, Space, Tag, Spin } from "antd";
+import { UserOutlined } from '@ant-design/icons';
 import './styles.css'
 import {
   $availableTeamsForUserList,
@@ -133,7 +134,7 @@ export const ContentUsersPage: FC = () => {
         renderItem={item => (
           <List.Item>
             <List.Item.Meta
-              avatar={<Avatar src="https://joeschmoe.io/api/v1/jack" />}
+              avatar={<Avatar size={48} icon={<UserOutlined />} />}
               title={item.username}
               description={`Команда: ${item.team} · Админ: ${item.isAdmin ? 'Да' : 'Нет'} · Логин: ${item.login}`}
             />

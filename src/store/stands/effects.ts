@@ -19,7 +19,7 @@ const FetchStandById = async (userId: number | null | undefined
     setIsUserStandsLoadingEvent(true)
   }
   if (!error) {
-    return data?.stands
+    return data?.stands_new
   }
   throw error
 }
@@ -32,7 +32,7 @@ const FetchAllStands = async () => {
     setIsStandsLoadingEvent(true)
   }
   if (!error) {
-    return data?.stands
+    return data?.stands_new
   }
   throw error
 }
